@@ -32,7 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A Tauri command round-trip (e.g., ping) completes successfully between Rust backend and React frontend
   3. HeroUI components render correctly with Tailwind CSS styling
   4. Hot module replacement works in development mode (frontend changes reflect without full reload)
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 2: Data Model
@@ -44,7 +47,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can create, rename, and delete nested subfolders within collections
   3. User can create, rename, delete, and duplicate requests within collections
   4. The sidebar tree renders the workspace > collections > folders > requests hierarchy correctly
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 3: HTTP Engine
@@ -57,7 +63,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User sees the response status code (color-coded), time in milliseconds, formatted JSON body with syntax highlighting, and response headers
   4. User sees a loading state while the request is in flight
   5. User sees a raw text fallback for non-JSON responses
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 4: Environments & Secrets
@@ -69,7 +78,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can add key-value variables with a "secret" toggle; secret values are stored in macOS Keychain only and never written to disk in the workspace
   3. {{variable}} references in URL, headers, query params, body, and auth token resolve to their values from the active environment
   4. User sees a visual indicator when a {{variable}} reference in a request cannot be resolved
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 5: GitHub Auth
@@ -82,7 +94,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can connect a GitHub repo as a workspace (clones the repo locally) and disconnect it (removes the local clone)
   4. User can switch between connected workspaces via the sidebar switcher
   5. App continues to function in local-only mode if the user has not logged in to GitHub
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 6: Git Sync Engine
@@ -94,7 +109,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. A connected workspace can pull remote changes to the local clone
   3. The sync status indicator in the top bar reflects the current state (synced / syncing / conflict)
   4. When a last-write-wins conflict is resolved, the user receives a notification identifying the affected file
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 7: Background Sync Loop
@@ -106,7 +124,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The workspace pulls from remote approximately every 30 seconds and immediately when the app regains focus
   3. Changes made while offline are queued locally and automatically pushed when connectivity is restored
   4. The sync status indicator correctly shows syncing, synced, offline, and conflict states throughout the cycle
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 
 ### Phase 8: Polish & Power Features
 **Goal**: The app is fast to navigate and fully keyboard-driven, with cURL import/export and fuzzy search completing the power-user workflow
@@ -118,7 +139,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can copy any request as a cURL command (Cmd+Shift+C or context menu) with variables resolved from the active environment
   4. User can open Cmd+K search, type a fuzzy query, and navigate directly to a matching request
   5. All keyboard shortcuts (Cmd+Enter, Cmd+N, Cmd+Shift+N, Cmd+K, Cmd+E, Cmd+Shift+C, Cmd+W, Cmd+S) work from anywhere in the app
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ## Progress
