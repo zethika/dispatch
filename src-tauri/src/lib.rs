@@ -1,3 +1,4 @@
+mod collections;
 mod commands;
 
 use tauri_specta::{collect_commands, Builder};
