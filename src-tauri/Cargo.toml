@@ -1,0 +1,21 @@
+[package]
+name = "dispatch"
+version = "0.1.0"
+description = "Dispatch — HTTP request client backed by GitHub"
+authors = []
+edition = "2021"
+
+[lib]
+name = "dispatch_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri-specta = { version = "2.0.0-rc.21", features = ["derive", "typescript"] }
+specta = "=2.0.0-rc.22"
+specta-typescript = "0.0.9"
