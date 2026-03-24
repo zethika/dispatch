@@ -2,105 +2,161 @@
 phase: 02-data-model
 plan: 02
 subsystem: ui
-tags: [react, typescript, heroui, zustand, collection-tree, context-menu, tailwind]
+tags: [react, heroui, zustand, tailwind, context-menu, tree-view]
 
 requires:
-  - 02-data-model/02-01 (Zustand store, TypeScript types, API wrappers)
-  - 01-foundation/01-01 (Tauri scaffold, HeroUI, three-panel layout)
+  - phase: 02-data-model/01
+    provides: "Rust CRUD commands, TypeScript types, collectionStore, API wrappers"
+  - phase: 01-foundation/01-01
+    provides: "Tauri scaffold, HeroUI, three-panel layout"
 provides:
-  - CollectionTree root component rendering workspace > collections > folders > requests
-  - MethodBadge colored HTTP method labels
-  - TreeContextMenu right-click context menu with CRUD actions
-  - RenameInput inline editable input with keyboard handling
-  - DeleteModal confirmation modal with child count
-  - Sidebar wired to CollectionTree (replaces placeholder)
-affects:
-  - future-phases (collection tree is the primary navigation surface)
+  - "Interactive collection tree sidebar with recursive rendering"
+  - "Right-click context menus for collections, folders, and requests"
+  - "Inline rename with Enter/Escape handling"
+  - "Delete confirmation modal with child count"
+  - "HTTP method badges (GET=green, POST=blue, PUT=orange, DELETE=red)"
+affects: [request-editor, environment-variables, git-sync]
 
 tech-stack:
   added: []
   patterns:
-    - "Node ID convention: collectionSlug/parentPath.join('/')/slug (unique per tree node)"
-    - "countChildren() recursive utility in FolderNode and CollectionNode"
-    - "RootContextMenu: custom fixed-position div for empty sidebar right-click (not HeroUI Dropdown)"
-    - "TreeContextMenu renders null when neither isOpen nor showDeleteModal — avoids unmounted modal"
-    - "useRef + useEffect for RenameInput focus/select — not relying on autoFocus alone (per Pitfall 3)"
-    - "window blur listener in TreeContextMenu closes menu when window loses focus (per Pitfall 4)"
+    - "Plain positioned div for context menus (HeroUI Dropdown unreliable with programmatic triggers)"
+    - "expandedNodes slug rewriting on rename to preserve tree state"
+    - "Dedicated collection-level Rust commands (delete_collection, rename_collection) separate from node-level CRUD"
 
 key-files:
   created:
+    - src/features/collections/CollectionTree.tsx
+    - src/features/collections/CollectionNode.tsx
+    - src/features/collections/FolderNode.tsx
+    - src/features/collections/RequestNode.tsx
     - src/features/collections/MethodBadge.tsx
+    - src/features/collections/TreeContextMenu.tsx
     - src/features/collections/RenameInput.tsx
     - src/features/collections/DeleteModal.tsx
-    - src/features/collections/TreeContextMenu.tsx
-    - src/features/collections/RequestNode.tsx
-    - src/features/collections/FolderNode.tsx
-    - src/features/collections/CollectionNode.tsx
-    - src/features/collections/CollectionTree.tsx
   modified:
-    - src/components/layout/Sidebar.tsx (replaced placeholder with CollectionTree)
+    - src/components/layout/Sidebar.tsx
+    - src-tauri/src/commands/collections.rs
+    - src-tauri/src/lib.rs
+    - src/api/collections.ts
+    - src/stores/collectionStore.ts
 
 key-decisions:
-  - "Node ID built as collectionSlug/parentPath.join('/')/slug — matches store contextMenuNodeId convention"
-  - "RootContextMenu uses custom fixed div instead of HeroUI Dropdown — avoids trigger element positioning complexity for empty-area right-click"
-  - "POST uses text-blue-500 not text-primary — primary is remapped to green (#17c964) in Phase 1 theme"
-  - "CollectionNode rename calls renameNode(slug, [], slug, newName, true) — collection rename parentPath is empty, slug is the collection slug"
+  - "Replaced HeroUI Dropdown with plain positioned div for context menus — HeroUI Dropdown with zero-size triggers does not render in WebKit"
+  - "Added dedicated delete_collection and rename_collection Rust commands — generic delete_node/rename_node resolve parent_dir inside the collection, not at collections/ level"
+  - "expandedNodes rewriting on rename — swaps old slug prefix for new slug in all child nodeIds to preserve tree open state"
+  - "POST uses text-blue-500 not text-primary — primary is remapped to green in Phase 1 theme"
 
-duration: ~5min
+patterns-established:
+  - "Context menu pattern: onContextMenu sets store state, plain fixed-position div renders at cursor, click/blur listeners dismiss"
+  - "Node ID convention: collections use slug directly, children use collectionSlug/parentPath/slug"
+
+requirements-completed: [COLL-01, COLL-02, COLL-03, COLL-04]
+
+duration: 45min
 completed: 2026-03-24
 ---
 
-# Phase 2 Plan 2: Collection Tree UI Components Summary
+# Plan 02-02: Collection Tree UI Summary
 
-**Partial completion (Task 1 of 2) — awaiting human visual verification checkpoint**
-
-**Complete collection tree UI: 8 new components (MethodBadge, RenameInput, DeleteModal, TreeContextMenu, RequestNode, FolderNode, CollectionNode, CollectionTree) wired into Sidebar, TypeScript clean**
+**Interactive sidebar tree with context menus, inline rename, delete modals, and HTTP method badges — all 13 visual verification items passed**
 
 ## Performance
 
-- **Duration:** ~5 min
-- **Completed:** 2026-03-24 (Task 1 only — checkpoint at Task 2)
-- **Tasks:** 1/2
+- **Duration:** ~45 min (including checkpoint fixes)
+- **Tasks:** 2 (1 auto + 1 human-verify checkpoint)
 - **Files created:** 8
-- **Files modified:** 1
+- **Files modified:** 5
 
 ## Accomplishments
-
-### Task 1: Collection tree components with method badges and context menu
-
-- `MethodBadge.tsx` — colored HTTP method spans: GET=`text-success`, POST=`text-blue-500`, PUT=`text-warning`, DELETE=`text-danger`, PATCH=`text-secondary`. Uses `w-10 shrink-0 font-mono font-bold text-[10px]`.
-- `RenameInput.tsx` — HeroUI Input (size="sm") with `useRef<HTMLInputElement>` + `useEffect` for explicit `focus()`/`select()`. Handles Enter (confirm if non-empty), Escape (cancel), and blur (confirm or cancel).
-- `DeleteModal.tsx` — HeroUI Modal with header "Delete {nodeName}?", body shows child count if > 0, footer has Cancel (variant="light") and Delete (color="danger") buttons. Imports and calls `useDisclosure`.
-- `TreeContextMenu.tsx` — HeroUI Dropdown with fixed-position zero-size trigger span at `contextMenuPosition`. Two DropdownSections with `showDivider`: Section 1 (New Request, New Folder for non-requests), Section 2 (Rename, Duplicate for requests, Delete). Window blur listener closes menu. Manages local `showDeleteModal` state to open DeleteModal.
-- `RequestNode.tsx` — flex row with `paddingLeft: depth * 16 + 8px`, `MethodBadge`, name span (or `RenameInput` when renaming), active highlight (`bg-default-200`), right-click triggers `setContextMenu`. Renders `TreeContextMenu`.
-- `FolderNode.tsx` — chevron SVG rotates 90deg on expand (CSS transition), folder icon SVG, recursive child rendering when expanded. `countChildren()` utility for delete modal. `onContextMenu` → `TreeContextMenu`.
-- `CollectionNode.tsx` — same chevron/icon pattern as FolderNode but for top-level collections. `collectionSlug` is `collection.slug`, `parentPath=[]` for direct children.
-- `CollectionTree.tsx` — workspace name header, empty state ("No collections yet / Right-click to create a collection"), maps collections to `CollectionNode`. `RootContextMenu` sub-component (custom fixed div) handles right-click on empty sidebar area → New Collection.
-- `Sidebar.tsx` — replaced placeholder div content with `<CollectionTree />`.
+- Full collection tree in sidebar: workspace > collections > folders > requests hierarchy (COLL-01)
+- Right-click context menus for all node types with create/rename/delete/duplicate actions (COLL-02, COLL-03, COLL-04)
+- Colored HTTP method badges: GET=green, POST=blue, PUT=orange, DELETE=red (D-01)
+- Inline rename with Enter to confirm, Escape to cancel, auto-focus and select (D-05)
+- Delete confirmation modal with recursive child count (D-06)
+- All 13 visual verification items approved by user in running Tauri app
 
 ## Task Commits
 
-| Task | Commit | Description |
-|------|--------|-------------|
-| 1 | cc4cc09 | feat(02-02): collection tree components with method badges, context menu, inline rename, delete modal |
+1. **Task 1: Collection tree components** - `cc4cc09` (feat)
+2. **Task 2: Visual verification + fixes** - `f4bbc8e` (fix — context menu, collection CRUD, rename state)
 
-## Verification Results
+**Plan metadata:** `94f3bf7` (docs: complete plan)
 
-1. `npx tsc --noEmit` — exits 0, no TypeScript errors
-2. All 9 acceptance criteria file patterns verified present
-3. Task 2 (visual verification) — PENDING human checkpoint
+## Files Created/Modified
+- `src/features/collections/CollectionTree.tsx` - Root tree with workspace header, empty state, root context menu
+- `src/features/collections/CollectionNode.tsx` - Top-level collection with expand/collapse
+- `src/features/collections/FolderNode.tsx` - Recursive folder with chevron animation
+- `src/features/collections/RequestNode.tsx` - Request row with method badge and active highlight
+- `src/features/collections/MethodBadge.tsx` - Colored HTTP method label
+- `src/features/collections/TreeContextMenu.tsx` - Right-click menu with CRUD actions
+- `src/features/collections/RenameInput.tsx` - Inline editable input with keyboard handling
+- `src/features/collections/DeleteModal.tsx` - HeroUI Modal with child count warning
+- `src/components/layout/Sidebar.tsx` - Replaced placeholder with CollectionTree
+- `src-tauri/src/commands/collections.rs` - Added delete_collection and rename_collection commands
+- `src/stores/collectionStore.ts` - Added collection-level actions and expandedNodes slug rewriting
+
+## Decisions Made
+- HeroUI Dropdown with zero-size programmatic triggers does not render in WebKit — replaced with plain positioned divs
+- Collection-level rename/delete needs dedicated Rust commands (parent_dir is `collections/`, not `collections/{slug}/`)
+- expandedNodes must rewrite all child slug prefixes when a parent is renamed
+- POST uses text-blue-500 instead of text-primary (primary remapped to green in theme)
 
 ## Deviations from Plan
 
-None — plan executed exactly as written for Task 1.
+### Auto-fixed Issues
 
-## Self-Check: PASSED
+**1. Native context menu not suppressed**
+- **Found during:** Task 2 (visual verification)
+- **Issue:** `e.target === e.currentTarget` guard prevented `e.preventDefault()` on child elements
+- **Fix:** Removed guard; child nodes already call `e.stopPropagation()`
+- **Files modified:** CollectionTree.tsx
+- **Committed in:** f4bbc8e
 
-- `src/features/collections/CollectionTree.tsx` — exists, contains `export function CollectionTree` and `useCollectionStore`
-- `src/features/collections/MethodBadge.tsx` — exists, contains `METHOD_COLORS`, `text-success`, `text-blue-500`, `text-warning`, `text-danger`
-- `src/components/layout/Sidebar.tsx` — exists, contains `CollectionTree`
-- Commit cc4cc09 — verified in git log
+**2. HeroUI Dropdown context menu not rendering**
+- **Found during:** Task 2 (visual verification)
+- **Issue:** Zero-size invisible trigger does not work with HeroUI Dropdown in WebKit
+- **Fix:** Replaced with plain positioned div + button pattern
+- **Files modified:** TreeContextMenu.tsx
+- **Committed in:** f4bbc8e
 
-## Known Stubs
+**3. Collection delete/rename failing silently**
+- **Found during:** Task 2 (visual verification)
+- **Issue:** nodeId mismatch + delete_node/rename_node resolve wrong parent_dir for collections
+- **Fix:** Fixed nodeId computation; added dedicated delete_collection and rename_collection Rust commands
+- **Files modified:** TreeContextMenu.tsx, commands/collections.rs, lib.rs, api/collections.ts, collectionStore.ts
+- **Committed in:** f4bbc8e
 
-None — all tree components are wired to real store actions (`createRequest`, `createFolder`, `renameNode`, `deleteNode`, `duplicateRequest`) which delegate to Tauri IPC commands backed by real file I/O from Plan 01.
+**4. Context menu clicks collapsing tree**
+- **Found during:** Task 2 (visual verification)
+- **Issue:** Click events on menu buttons bubbled to row's toggleExpanded handler
+- **Fix:** Added `e.stopPropagation()` on context menu container
+- **Files modified:** TreeContextMenu.tsx
+- **Committed in:** f4bbc8e
+
+**5. Rename collapses tree state**
+- **Found during:** Task 2 (visual verification)
+- **Issue:** Slug change after rename invalidated expandedNodes entries
+- **Fix:** Rewrite all expandedNodes entries with old slug prefix to use new slug
+- **Files modified:** collectionStore.ts
+- **Committed in:** f4bbc8e
+
+---
+
+**Total deviations:** 5 auto-fixed (all discovered during visual verification checkpoint)
+**Impact on plan:** All fixes necessary for correct behavior. No scope creep.
+
+## Issues Encountered
+None beyond the deviations above — all discovered and resolved during the human verification checkpoint.
+
+## User Setup Required
+None - no external service configuration required.
+
+## Next Phase Readiness
+- Collection tree fully interactive and persisting to disk
+- Ready for request editor phase (selecting a request in tree → loading it in editor panel)
+- Git sync phase can now operate on the file-based collection structure
+
+---
+*Phase: 02-data-model*
+*Completed: 2026-03-24*
