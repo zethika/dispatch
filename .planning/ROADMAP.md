@@ -49,8 +49,8 @@ Plans:
   4. The sidebar tree renders the workspace > collections > folders > requests hierarchy correctly
 **Plans**: 2 plans
 Plans:
-- [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [x] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [ ] 02-01-PLAN.md — Rust data engine (types, slugify, I/O, CRUD commands) and frontend data layer (types, store, API wrappers)
+- [ ] 02-02-PLAN.md — Collection tree UI components (recursive tree, method badges, context menu, inline rename, delete modal)
 **UI hint**: yes
 
 ### Phase 3: HTTP Engine
@@ -153,7 +153,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
-| 2. Data Model | 0/? | Not started | - |
+| 2. Data Model | 0/2 | Planned | - |
 | 3. HTTP Engine | 0/? | Not started | - |
 | 4. Environments & Secrets | 0/? | Not started | - |
 | 5. GitHub Auth | 0/? | Not started | - |
