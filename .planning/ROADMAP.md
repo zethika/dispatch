@@ -12,7 +12,7 @@ Dispatch is built in strict dependency order: the file model before git, auth be
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Tauri project scaffolding with working IPC, HeroUI, and app shell layout
+- [x] **Phase 1: Foundation** - Tauri project scaffolding with working IPC, HeroUI, and app shell layout (completed 2026-03-24)
 - [ ] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI
 - [ ] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch
 - [ ] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution
@@ -50,7 +50,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [x] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 3: HTTP Engine
@@ -65,7 +65,7 @@ Plans:
   5. User sees a raw text fallback for non-JSON responses
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
 - [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 2/2 | Complete   | 2026-03-24 |
 | 2. Data Model | 0/? | Not started | - |
 | 3. HTTP Engine | 0/? | Not started | - |
 | 4. Environments & Secrets | 0/? | Not started | - |

@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: "Checkpoint: visual verify of 01-02 app shell — awaiting user"
-last_updated: "2026-03-24T07:37:47.959Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 01-foundation 01-02-PLAN.md
+last_updated: "2026-03-24T07:58:15.057Z"
 progress:
   total_phases: 8
   completed_phases: 1
@@ -47,6 +47,7 @@ Plan: 2 of 2
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 6 | 2 tasks | 19 files |
+| Phase 01-foundation P02 | 35 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Green primary color #17c964 (HeroUI success green repurposed as primary semantic slot per D-07); window 1280x800 default, 1024x640 minimum
 - [Phase 01-foundation]: CSS grid for RightPanel split: gridTemplateRows avoids flex math complexity for resizable split panels
 - [Phase 01-foundation]: data-tauri-drag-region on TopBar root: enables macOS window dragging without separate drag area overlay
+- [Phase 01-foundation]: CSS grid for RightPanel split: gridTemplateRows avoids flex math complexity for resizable split panels
+- [Phase 01-foundation]: data-tauri-drag-region on TopBar root: enables macOS window dragging without separate drag area overlay
+- [Phase 01-foundation]: splitRatio clamped in store (not component): store is the single source of truth for bounded 0.2-0.8 range
 
 ### Pending Todos
 
@@ -78,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-24T07:37:40.859Z
-Stopped at: Checkpoint: visual verify of 01-02 app shell — awaiting user
+Last session: 2026-03-24T07:58:15.054Z
+Stopped at: Completed 01-foundation 01-02-PLAN.md
 Resume file: None
