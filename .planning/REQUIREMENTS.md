@@ -27,10 +27,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Collections
 
-- [ ] **COLL-01**: User sees a sidebar tree of workspaces > collections > folders > requests
-- [ ] **COLL-02**: User can create, rename, and delete collections
-- [ ] **COLL-03**: User can create, rename, and delete subfolders within collections (arbitrary nesting)
-- [ ] **COLL-04**: User can create, rename, delete, and duplicate requests
+- [x] **COLL-01**: User sees a sidebar tree of workspaces > collections > folders > requests
+- [x] **COLL-02**: User can create, rename, and delete collections
+- [x] **COLL-03**: User can create, rename, and delete subfolders within collections (arbitrary nesting)
+- [x] **COLL-04**: User can create, rename, delete, and duplicate requests
 - [ ] **COLL-05**: User can drag and drop to reorder requests and folders within a collection
 - [ ] **COLL-06**: User can drag and drop to move requests and folders between collections
 
@@ -141,10 +141,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | APP-01 | Phase 1 | Complete |
 | APP-02 | Phase 1 | Complete |
 | APP-03 | Phase 1 | Complete |
-| COLL-01 | Phase 2 | Pending |
-| COLL-02 | Phase 2 | Pending |
-| COLL-03 | Phase 2 | Pending |
-| COLL-04 | Phase 2 | Pending |
+| COLL-01 | Phase 2 | Complete |
+| COLL-02 | Phase 2 | Complete |
+| COLL-03 | Phase 2 | Complete |
+| COLL-04 | Phase 2 | Complete |
 | HTTP-01 | Phase 3 | Pending |
 | HTTP-02 | Phase 3 | Pending |
 | HTTP-03 | Phase 3 | Pending |
