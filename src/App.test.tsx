@@ -2,30 +2,38 @@ import { render, screen } from '@testing-library/react';
 import { HeroUIProvider } from '@heroui/react';
 import { describe, it, expect, vi } from 'vitest';
 
-// Mock Tauri invoke since vitest runs outside Tauri
 vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn().mockResolvedValue('pong'),
 }));
 
-// Import App after mocking
 import App from './App';
 
-describe('App', () => {
-  it('renders the Dispatch heading', async () => {
-    render(
-      <HeroUIProvider>
-        <App />
-      </HeroUIProvider>
-    );
-    expect(screen.getByText('Dispatch')).toBeInTheDocument();
+function renderApp() {
+  return render(
+    <HeroUIProvider>
+      <App />
+    </HeroUIProvider>
+  );
+}
+
+describe('App Shell Layout (APP-02)', () => {
+  it('renders the top bar', () => {
+    renderApp();
+    expect(screen.getByTestId('topbar')).toBeInTheDocument();
   });
 
-  it('renders HeroUI Button component', async () => {
-    render(
-      <HeroUIProvider>
-        <App />
-      </HeroUIProvider>
-    );
-    expect(screen.getByRole('button', { name: /heroui works/i })).toBeInTheDocument();
+  it('renders the sidebar', () => {
+    renderApp();
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+  });
+
+  it('renders the request editor', () => {
+    renderApp();
+    expect(screen.getByTestId('request-editor')).toBeInTheDocument();
+  });
+
+  it('renders the response viewer', () => {
+    renderApp();
+    expect(screen.getByTestId('response-viewer')).toBeInTheDocument();
   });
 });

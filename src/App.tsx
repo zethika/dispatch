@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Button } from '@heroui/react';
-import { ping } from './api/system';
+import TopBar from './components/layout/TopBar';
+import Sidebar from './components/layout/Sidebar';
+import RightPanel from './components/layout/RightPanel';
 
 export default function App() {
-  const [pong, setPong] = useState<string | null>(null);
-
-  useEffect(() => {
-    ping().then(setPong).catch(console.error);
-  }, []);
-
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-4">
-      <h1 className="text-2xl font-bold">Dispatch</h1>
-      <p>IPC ping result: {pong ?? 'loading...'}</p>
-      <Button color="primary">HeroUI Works</Button>
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
+      <TopBar />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <RightPanel />
+      </div>
     </div>
   );
 }
