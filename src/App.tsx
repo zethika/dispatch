@@ -2,12 +2,18 @@ import { useEffect } from 'react';
 import TopBar from './components/layout/TopBar';
 import Sidebar from './components/layout/Sidebar';
 import RightPanel from './components/layout/RightPanel';
-import { ping } from './api/system';
+import { ensureDefaultWorkspace } from './api/collections';
+import { useCollectionStore } from './stores/collectionStore';
 
 export default function App() {
+  const { workspaceId, loadWorkspace } = useCollectionStore();
+
   useEffect(() => {
-    ping().then((result) => console.log('IPC ping result:', result)).catch(console.error);
-  }, []);
+    if (workspaceId) return;
+    ensureDefaultWorkspace()
+      .then((id) => loadWorkspace(id))
+      .catch(console.error);
+  }, [workspaceId, loadWorkspace]);
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
