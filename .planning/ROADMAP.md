@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. Hot module replacement works in development mode (frontend changes reflect without full reload)
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
 - [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 

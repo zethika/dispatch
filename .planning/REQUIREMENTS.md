@@ -86,9 +86,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### App Shell
 
-- [ ] **APP-01**: User can send a request within 60 seconds of first launch, before any GitHub login
-- [ ] **APP-02**: App uses a three-panel layout: sidebar (tree), request editor (top-right), response viewer (bottom-right)
-- [ ] **APP-03**: Top bar shows workspace switcher, environment selector, and sync status
+- [x] **APP-01**: User can send a request within 60 seconds of first launch, before any GitHub login
+- [x] **APP-02**: App uses a three-panel layout: sidebar (tree), request editor (top-right), response viewer (bottom-right)
+- [x] **APP-03**: Top bar shows workspace switcher, environment selector, and sync status
 
 ## v2 Requirements
 
@@ -138,9 +138,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| APP-01 | Phase 1 | Pending |
-| APP-02 | Phase 1 | Pending |
-| APP-03 | Phase 1 | Pending |
+| APP-01 | Phase 1 | Complete |
+| APP-02 | Phase 1 | Complete |
+| APP-03 | Phase 1 | Complete |
 | COLL-01 | Phase 2 | Pending |
 | COLL-02 | Phase 2 | Pending |
 | COLL-03 | Phase 2 | Pending |
