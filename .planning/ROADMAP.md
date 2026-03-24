@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [x] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 
 ### Phase 2: Data Model
@@ -49,7 +49,7 @@ Plans:
   4. The sidebar tree renders the workspace > collections > folders > requests hierarchy correctly
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
+- [x] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
 - [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
 **UI hint**: yes
 

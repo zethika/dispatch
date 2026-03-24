@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-foundation/01-01-PLAN.md
-last_updated: "2026-03-24T07:33:42.018Z"
+stopped_at: "Checkpoint: visual verify of 01-02 app shell — awaiting user"
+last_updated: "2026-03-24T07:37:47.959Z"
 progress:
   total_phases: 8
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -63,6 +63,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Pin @heroui/react@2.7.11 — npm latest now resolves to v3.0.1 (Tailwind v4); v2 pin required for Tailwind v3 constraint
 - [Phase 01-foundation]: specta-typescript@0.0.9 (not 0.0.10) to resolve version conflict with tauri-specta@rc.21 specta@rc.22 requirement
 - [Phase 01-foundation]: Green primary color #17c964 (HeroUI success green repurposed as primary semantic slot per D-07); window 1280x800 default, 1024x640 minimum
+- [Phase 01-foundation]: CSS grid for RightPanel split: gridTemplateRows avoids flex math complexity for resizable split panels
+- [Phase 01-foundation]: data-tauri-drag-region on TopBar root: enables macOS window dragging without separate drag area overlay
 
 ### Pending Todos
 
@@ -76,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-24T07:33:42.015Z
-Stopped at: Completed 01-foundation/01-01-PLAN.md
+Last session: 2026-03-24T07:37:40.859Z
+Stopped at: Checkpoint: visual verify of 01-02 app shell — awaiting user
 Resume file: None
