@@ -87,6 +87,21 @@ export async function deleteNode(
   });
 }
 
+export async function deleteCollection(
+  workspaceId: string,
+  collectionSlug: string,
+): Promise<void> {
+  return invoke<void>('delete_collection', { workspaceId, collectionSlug });
+}
+
+export async function renameCollection(
+  workspaceId: string,
+  oldSlug: string,
+  newName: string,
+): Promise<string> {
+  return invoke<string>('rename_collection', { workspaceId, oldSlug, newName });
+}
+
 export async function duplicateRequest(
   workspaceId: string,
   collectionSlug: string,

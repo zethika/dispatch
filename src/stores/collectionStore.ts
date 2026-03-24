@@ -30,6 +30,8 @@ interface CollectionStore {
     slug: string,
     isDir: boolean,
   ) => Promise<void>;
+  deleteCollection: (collectionSlug: string) => Promise<void>;
+  renameCollection: (oldSlug: string, newName: string) => Promise<void>;
   duplicateRequest: (
     collectionSlug: string,
     parentPath: string[],
@@ -103,7 +105,7 @@ export const useCollectionStore = create<CollectionStore>((set, get) => ({
   ) => {
     const { workspaceId } = get();
     if (!workspaceId) return;
-    await collectionsApi.renameNode(
+    const newSlug = await collectionsApi.renameNode(
       workspaceId,
       collectionSlug,
       parentPath,
@@ -111,6 +113,22 @@ export const useCollectionStore = create<CollectionStore>((set, get) => ({
       newName,
       isDir,
     );
+    // Update expandedNodes: swap old nodeId for new
+    if (isDir) {
+      const oldId = parentPath.length > 0
+        ? `${collectionSlug}/${parentPath.join('/')}/${oldSlug}`
+        : `${collectionSlug}/${oldSlug}`;
+      const newId = parentPath.length > 0
+        ? `${collectionSlug}/${parentPath.join('/')}/${newSlug}`
+        : `${collectionSlug}/${newSlug}`;
+      set((state) => {
+        if (!state.expandedNodes.has(oldId)) return state;
+        const next = new Set(state.expandedNodes);
+        next.delete(oldId);
+        next.add(newId);
+        return { expandedNodes: next };
+      });
+    }
     await get().refreshWorkspace();
   },
 
@@ -123,6 +141,34 @@ export const useCollectionStore = create<CollectionStore>((set, get) => ({
     const { workspaceId } = get();
     if (!workspaceId) return;
     await collectionsApi.deleteNode(workspaceId, collectionSlug, parentPath, slug, isDir);
+    await get().refreshWorkspace();
+  },
+
+  deleteCollection: async (collectionSlug: string) => {
+    const { workspaceId } = get();
+    if (!workspaceId) return;
+    await collectionsApi.deleteCollection(workspaceId, collectionSlug);
+    await get().refreshWorkspace();
+  },
+
+  renameCollection: async (oldSlug: string, newName: string) => {
+    const { workspaceId } = get();
+    if (!workspaceId) return;
+    const newSlug = await collectionsApi.renameCollection(workspaceId, oldSlug, newName);
+    // Update expandedNodes: swap collection slug and rewrite any child nodeIds that use it as prefix
+    set((state) => {
+      const next = new Set<string>();
+      for (const id of state.expandedNodes) {
+        if (id === oldSlug) {
+          next.add(newSlug);
+        } else if (id.startsWith(oldSlug + '/')) {
+          next.add(newSlug + id.slice(oldSlug.length));
+        } else {
+          next.add(id);
+        }
+      }
+      return { expandedNodes: next };
+    });
     await get().refreshWorkspace();
   },
 

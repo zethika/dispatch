@@ -1,11 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  DropdownSection,
-} from '@heroui/react';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { DeleteModal } from './DeleteModal';
 
@@ -35,30 +28,36 @@ export function TreeContextMenu({
     createFolder,
     duplicateRequest,
     deleteNode,
+    deleteCollection,
   } = useCollectionStore();
 
+  // For collections, collectionSlug === slug and parentPath is [],
+  // so nodeId is just the slug itself (matching CollectionNode's nodeId).
   const nodeId =
     parentPath.length > 0
       ? `${collectionSlug}/${parentPath.join('/')}/${slug}`
-      : `${collectionSlug}/${slug}`;
+      : collectionSlug === slug
+        ? slug
+        : `${collectionSlug}/${slug}`;
 
   const isOpen = contextMenuNodeId === nodeId && contextMenuPosition !== null;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Close context menu when window loses focus
+  // Close context menu on any click or blur
   useEffect(() => {
-    const handleBlur = () => setContextMenu(null, null);
-    window.addEventListener('blur', handleBlur);
-    return () => window.removeEventListener('blur', handleBlur);
-  }, [setContextMenu]);
+    if (!isOpen) return;
+    const close = () => setContextMenu(null, null);
+    window.addEventListener('click', close);
+    window.addEventListener('blur', close);
+    return () => {
+      window.removeEventListener('click', close);
+      window.removeEventListener('blur', close);
+    };
+  }, [isOpen, setContextMenu]);
 
-  const handleOpenChange = (open: boolean) => {
-    if (!open) setContextMenu(null, null);
-  };
-
-  const handleAction = (key: React.Key) => {
+  const handleAction = (action: string) => {
     setContextMenu(null, null);
-    switch (key) {
+    switch (action) {
       case 'new-request':
         void createRequest(collectionSlug, nodeType === 'folder' ? [...parentPath, slug] : parentPath, 'New Request');
         break;
@@ -79,52 +78,62 @@ export function TreeContextMenu({
 
   const handleDeleteConfirm = () => {
     setShowDeleteModal(false);
-    void deleteNode(collectionSlug, parentPath, slug, nodeType !== 'request');
+    if (nodeType === 'collection') {
+      void deleteCollection(collectionSlug);
+    } else {
+      void deleteNode(collectionSlug, parentPath, slug, nodeType !== 'request');
+    }
   };
-
-  if (!isOpen && !showDeleteModal) return null;
 
   return (
     <>
       {isOpen && contextMenuPosition && (
-        <Dropdown
-          isOpen={isOpen}
-          onOpenChange={handleOpenChange}
-          placement="bottom-start"
+        <div
+          style={{
+            position: 'fixed',
+            left: contextMenuPosition.x,
+            top: contextMenuPosition.y,
+            zIndex: 9999,
+          }}
+          className="bg-content1 border border-divider rounded-lg shadow-lg py-1 min-w-[160px]"
+          onClick={(e) => e.stopPropagation()}
         >
-          <DropdownTrigger>
-            <span
-              style={{
-                position: 'fixed',
-                left: contextMenuPosition.x,
-                top: contextMenuPosition.y,
-                width: 0,
-                height: 0,
-                display: 'block',
-              }}
-            />
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Node actions"
-            onAction={handleAction}
+          <button
+            className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+            onClick={() => handleAction('new-request')}
           >
-            <DropdownSection showDivider>
-              <DropdownItem key="new-request">New Request</DropdownItem>
-              {nodeType !== 'request' ? (
-                <DropdownItem key="new-folder">New Folder</DropdownItem>
-              ) : null}
-            </DropdownSection>
-            <DropdownSection>
-              <DropdownItem key="rename">Rename</DropdownItem>
-              {nodeType === 'request' ? (
-                <DropdownItem key="duplicate">Duplicate</DropdownItem>
-              ) : null}
-              <DropdownItem key="delete" color="danger" className="text-danger">
-                Delete
-              </DropdownItem>
-            </DropdownSection>
-          </DropdownMenu>
-        </Dropdown>
+            New Request
+          </button>
+          {nodeType !== 'request' && (
+            <button
+              className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+              onClick={() => handleAction('new-folder')}
+            >
+              New Folder
+            </button>
+          )}
+          <div className="my-1 border-t border-divider" />
+          <button
+            className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+            onClick={() => handleAction('rename')}
+          >
+            Rename
+          </button>
+          {nodeType === 'request' && (
+            <button
+              className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+              onClick={() => handleAction('duplicate')}
+            >
+              Duplicate
+            </button>
+          )}
+          <button
+            className="w-full text-left px-3 py-1.5 text-sm text-danger hover:bg-default-100 cursor-pointer"
+            onClick={() => handleAction('delete')}
+          >
+            Delete
+          </button>
+        </div>
       )}
 
       <DeleteModal

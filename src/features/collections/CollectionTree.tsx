@@ -7,11 +7,11 @@ export function CollectionTree() {
     useCollectionStore();
 
   const handleRootContextMenu = (e: React.MouseEvent) => {
-    // Only fire if clicking directly on the root container (not a child node)
-    if (e.target === e.currentTarget) {
-      e.preventDefault();
-      setContextMenu('__root__', { x: e.clientX, y: e.clientY });
-    }
+    // Always prevent native context menu in the tree area.
+    // Child nodes (CollectionNode, etc.) call e.stopPropagation(),
+    // so this only fires for empty space / non-interactive elements.
+    e.preventDefault();
+    setContextMenu('__root__', { x: e.clientX, y: e.clientY });
   };
 
   return (

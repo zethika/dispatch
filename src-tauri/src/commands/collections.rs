@@ -116,6 +116,31 @@ pub fn delete_node(
 
 #[tauri::command]
 #[specta::specta]
+pub fn delete_collection(
+    workspace_id: String,
+    collection_slug: String,
+    app: tauri::AppHandle,
+) -> Result<(), String> {
+    let ws_dir = workspace_dir(&app, &workspace_id)?;
+    let collections_dir = ws_dir.join("collections");
+    io::delete_node(&collections_dir, &collection_slug, true).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn rename_collection(
+    workspace_id: String,
+    old_slug: String,
+    new_name: String,
+    app: tauri::AppHandle,
+) -> Result<String, String> {
+    let ws_dir = workspace_dir(&app, &workspace_id)?;
+    let collections_dir = ws_dir.join("collections");
+    io::rename_node(&collections_dir, &old_slug, &new_name, true).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub fn duplicate_request(
     workspace_id: String,
     collection_slug: String,

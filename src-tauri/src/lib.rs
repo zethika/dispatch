@@ -18,6 +18,8 @@ pub fn run() {
             commands::collections::create_request,
             commands::collections::rename_node,
             commands::collections::delete_node,
+            commands::collections::delete_collection,
+            commands::collections::rename_collection,
             commands::collections::duplicate_request,
         ]);
 

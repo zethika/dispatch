@@ -28,7 +28,7 @@ export function CollectionNode({ collection, depth }: CollectionNodeProps) {
     toggleExpanded,
     setContextMenu,
     setRenamingNode,
-    renameNode,
+    renameCollection,
   } = useCollectionStore();
 
   const nodeId = collection.slug;
@@ -44,8 +44,7 @@ export function CollectionNode({ collection, depth }: CollectionNodeProps) {
 
   const handleRenameConfirm = (newName: string) => {
     setRenamingNode(null);
-    // For collection rename, parentPath is [], slug is collection.slug, isDir = true
-    void renameNode(collection.slug, [], collection.slug, newName, true);
+    void renameCollection(collection.slug, newName);
   };
 
   const handleRenameCancel = () => {
