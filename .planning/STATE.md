@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 02-data-model/02-01-PLAN.md
-last_updated: "2026-03-24T09:41:11.419Z"
+stopped_at: "Checkpoint: Task 2 visual verification of collection tree (02-02-PLAN.md)"
+last_updated: "2026-03-24T09:45:36.796Z"
 progress:
   total_phases: 8
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -73,6 +73,9 @@ Recent decisions affecting current work:
 - [Phase 02-data-model]: Collections module is pure Rust (no Tauri dependency) — testable with tempfile without Tauri runtime
 - [Phase 02-data-model]: Commands are thin delegates: path resolution in commands/, all I/O logic in collections/io.rs
 - [Phase 02-data-model]: tsconfig exclude bindings.ts — auto-generated file has unused imports when no events exist
+- [Phase Phase 02-data-model]: Node ID built as collectionSlug/parentPath.join('/')/slug — matches store contextMenuNodeId convention
+- [Phase Phase 02-data-model]: POST uses text-blue-500 not text-primary — primary is remapped to green (#17c964) in Phase 1 theme
+- [Phase Phase 02-data-model]: RootContextMenu uses custom fixed div instead of HeroUI Dropdown — avoids trigger positioning complexity for empty-area right-click
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-24T09:41:11.417Z
-Stopped at: Completed 02-data-model/02-01-PLAN.md
+Last session: 2026-03-24T09:45:29.852Z
+Stopped at: Checkpoint: Task 2 visual verification of collection tree (02-02-PLAN.md)
 Resume file: None

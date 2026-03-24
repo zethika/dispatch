@@ -13,7 +13,7 @@ Dispatch is built in strict dependency order: the file model before git, auth be
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Tauri project scaffolding with working IPC, HeroUI, and app shell layout (completed 2026-03-24)
-- [ ] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI
+- [x] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI (completed 2026-03-24)
 - [ ] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch
 - [ ] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution
 - [ ] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect
@@ -50,7 +50,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 02-01-PLAN.md — Rust data engine (types, slugify, I/O, CRUD commands) and frontend data layer (types, store, API wrappers)
-- [ ] 02-02-PLAN.md — Collection tree UI components (recursive tree, method badges, context menu, inline rename, delete modal)
+- [x] 02-02-PLAN.md — Collection tree UI components (recursive tree, method badges, context menu, inline rename, delete modal)
 **UI hint**: yes
 
 ### Phase 3: HTTP Engine
@@ -153,7 +153,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
-| 2. Data Model | 1/2 | In Progress|  |
+| 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 0/? | Not started | - |
 | 4. Environments & Secrets | 0/? | Not started | - |
 | 5. GitHub Auth | 0/? | Not started | - |
