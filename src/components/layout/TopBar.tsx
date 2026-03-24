@@ -11,7 +11,7 @@ export default function TopBar() {
         Dispatch
       </span>
 
-      <Button size="sm" variant="flat" className="ml-2">
+      <Button size="sm" color="primary" variant="flat" className="ml-2">
         Connect GitHub
       </Button>
 
