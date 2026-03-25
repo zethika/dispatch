@@ -38,7 +38,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **ENV-01**: User can create, edit, and delete environments for a workspace
 - [x] **ENV-02**: User can select an active environment from the top bar (global to workspace)
-- [ ] **ENV-03**: User can add variables with a key-value editor and a "secret" toggle per variable
+- [x] **ENV-03**: User can add variables with a key-value editor and a "secret" toggle per variable
 - [x] **ENV-04**: {{variable}} substitution works in URL, headers, query params, body, and auth token
 - [x] **ENV-05**: Secret variable values are stored locally only and never committed to git
 - [x] **ENV-06**: User sees a visual indicator when a variable in a request cannot be resolved
@@ -159,7 +159,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RESP-05 | Phase 3 | Complete |
 | ENV-01 | Phase 4 | Complete |
 | ENV-02 | Phase 4 | Complete |
-| ENV-03 | Phase 4 | Pending |
+| ENV-03 | Phase 4 | Complete |
 | ENV-04 | Phase 4 | Complete |
 | ENV-05 | Phase 4 | Complete |
 | ENV-06 | Phase 4 | Complete |

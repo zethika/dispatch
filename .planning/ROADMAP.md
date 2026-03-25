@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Tauri project scaffolding with working IPC, HeroUI, and app shell layout (completed 2026-03-24)
 - [x] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI (completed 2026-03-24)
 - [x] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch (completed 2026-03-25)
-- [ ] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution
+- [x] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution (completed 2026-03-25)
 - [ ] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect
 - [ ] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification
 - [ ] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator
@@ -82,7 +82,7 @@ Plans:
 **Plans**: 3 plans
 Plans:
 - [x] 04-01-PLAN.md — Rust environment I/O + secrets store + IPC commands, frontend types/store/API, variable utilities
-- [ ] 04-02-PLAN.md — Environment manager modal (two-pane), TopBar dropdown wiring, variable editor with secret toggle
+- [x] 04-02-PLAN.md — Environment manager modal (two-pane), TopBar dropdown wiring, variable editor with secret toggle
 - [x] 04-03-PLAN.md — Variable substitution in sendRequest, UrlBar highlighting overlay, unresolved variable badge
 **UI hint**: yes
 
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
-| 4. Environments & Secrets | 2/3 | In Progress|  |
+| 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
 | 5. GitHub Auth | 0/? | Not started | - |
 | 6. Git Sync Engine | 0/? | Not started | - |
 | 7. Background Sync Loop | 0/? | Not started | - |
