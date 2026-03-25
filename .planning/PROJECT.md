@@ -12,19 +12,21 @@ Teams can share and collaborate on API request collections through git — witho
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Manage environment variables with secret/non-secret distinction — Validated in Phase 4: Environments & Secrets
+- [x] Variable substitution in URLs, headers, params, body, and auth — Validated in Phase 4: Environments & Secrets
+- [x] Local-only secrets layer (never committed to git) — Validated in Phase 4: Environments & Secrets
 
 ### Active
 
 - [ ] Send HTTP requests (GET, POST, PUT, DELETE) and view responses
 - [ ] Organize requests into collections and nested folders
-- [ ] Manage environment variables with secret/non-secret distinction
-- [ ] Variable substitution in URLs, headers, params, body, and auth
+- ~~Manage environment variables with secret/non-secret distinction~~ → Validated
+- ~~Variable substitution in URLs, headers, params, body, and auth~~ → Validated
 - [ ] GitHub OAuth device flow login
 - [ ] Connect GitHub repos as workspaces (clone, sync, disconnect)
 - [ ] Auto-sync via git (debounced commit+push, periodic pull, focus pull)
 - [ ] File-based data model (JSON files committed to repo)
-- [ ] Local-only secrets layer (never committed to git)
+- ~~Local-only secrets layer (never committed to git)~~ → Validated
 - [ ] Conflict resolution (last-write-wins at file level with notification)
 - [ ] Offline support (queue changes, push when connectivity returns)
 - [ ] cURL import (paste detection + explicit import action)
@@ -68,7 +70,7 @@ Teams can share and collaborate on API request collections through git — witho
 |----------|-----------|---------|
 | GitHub repos as workspaces | Repo access controls who can read/write — no separate user management needed | — Pending |
 | File-based JSON data model | Human-readable, git-diffable, version history for free | — Pending |
-| Local-only secrets layer | API keys and tokens must never be committed to git | — Pending |
+| Local-only secrets layer | API keys and tokens must never be committed to git | ✓ Phase 4 — secrets stored as local JSON at app_data_dir/secrets/, stripped before workspace write |
 | Auto-sync with debounce | Users shouldn't think about saving or syncing — it just happens | — Pending |
 | Last-write-wins conflicts | Simple, predictable — notify user rather than force manual merge | — Pending |
 | HeroUI component library | Polished components out of the box, built on Tailwind | — Pending |
@@ -92,4 +94,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-25 after Phase 3 (HTTP Engine) complete — Rust HTTP executor, request editor with tabs, response viewer with JSON highlighting, full send/receive flow*
+*Last updated: 2026-03-25 after Phase 4 (Environments & Secrets) complete — environment CRUD, variable editor with secret toggle, {{variable}} substitution across all request fields, UrlBar highlighting overlay*
