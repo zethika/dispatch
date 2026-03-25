@@ -1,5 +1,6 @@
 mod collections;
 mod commands;
+mod http;
 
 use tauri::Manager;
 use tauri_specta::{collect_commands, Builder};
@@ -21,6 +22,9 @@ pub fn run() {
             commands::collections::delete_collection,
             commands::collections::rename_collection,
             commands::collections::duplicate_request,
+            commands::http::send_request,
+            commands::http::load_request,
+            commands::http::save_request,
         ]);
 
     #[cfg(debug_assertions)]
@@ -29,6 +33,7 @@ pub fn run() {
         .expect("Failed to export TS bindings");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
         .invoke_handler(builder.invoke_handler())
         .setup(move |app| {
             builder.mount_events(app);

@@ -1,4 +1,5 @@
 pub mod collections;
+pub mod http;
 
 #[tauri::command]
 #[specta::specta]
