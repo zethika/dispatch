@@ -1,5 +1,6 @@
 mod collections;
 mod commands;
+mod environments;
 mod http;
 
 use tauri::Manager;
@@ -25,6 +26,14 @@ pub fn run() {
             commands::http::send_request,
             commands::http::load_request,
             commands::http::save_request,
+            commands::environments::list_environments,
+            commands::environments::load_environment,
+            commands::environments::save_environment,
+            commands::environments::create_environment,
+            commands::environments::delete_environment,
+            commands::environments::rename_environment,
+            commands::environments::load_secret_values,
+            commands::environments::save_secret_values,
         ]);
 
     #[cfg(debug_assertions)]
@@ -33,6 +42,7 @@ pub fn run() {
         .expect("Failed to export TS bindings");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_http::init())
         .invoke_handler(builder.invoke_handler())
         .setup(move |app| {
