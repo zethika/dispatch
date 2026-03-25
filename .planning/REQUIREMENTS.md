@@ -41,7 +41,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ENV-03**: User can add variables with a key-value editor and a "secret" toggle per variable
 - [x] **ENV-04**: {{variable}} substitution works in URL, headers, query params, body, and auth token
 - [x] **ENV-05**: Secret variable values are stored locally only and never committed to git
-- [ ] **ENV-06**: User sees a visual indicator when a variable in a request cannot be resolved
+- [x] **ENV-06**: User sees a visual indicator when a variable in a request cannot be resolved
 
 ### GitHub Auth
 
@@ -162,7 +162,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENV-03 | Phase 4 | Pending |
 | ENV-04 | Phase 4 | Complete |
 | ENV-05 | Phase 4 | Complete |
-| ENV-06 | Phase 4 | Pending |
+| ENV-06 | Phase 4 | Complete |
 | AUTH-01 | Phase 5 | Pending |
 | AUTH-02 | Phase 5 | Pending |
 | AUTH-03 | Phase 5 | Pending |

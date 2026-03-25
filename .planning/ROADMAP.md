@@ -83,7 +83,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — Rust environment I/O + secrets store + IPC commands, frontend types/store/API, variable utilities
 - [ ] 04-02-PLAN.md — Environment manager modal (two-pane), TopBar dropdown wiring, variable editor with secret toggle
-- [ ] 04-03-PLAN.md — Variable substitution in sendRequest, UrlBar highlighting overlay, unresolved variable badge
+- [x] 04-03-PLAN.md — Variable substitution in sendRequest, UrlBar highlighting overlay, unresolved variable badge
 **UI hint**: yes
 
 ### Phase 5: GitHub Auth
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
-| 4. Environments & Secrets | 0/3 | Not started | - |
+| 4. Environments & Secrets | 2/3 | In Progress|  |
 | 5. GitHub Auth | 0/? | Not started | - |
 | 6. Git Sync Engine | 0/? | Not started | - |
 | 7. Background Sync Loop | 0/? | Not started | - |
