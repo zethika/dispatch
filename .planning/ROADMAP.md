@@ -76,13 +76,14 @@ Plans:
 **Requirements**: ENV-01, ENV-02, ENV-03, ENV-04, ENV-05, ENV-06
 **Success Criteria** (what must be TRUE):
   1. User can create, edit, and delete environments and select the active environment from the top bar
-  2. User can add key-value variables with a "secret" toggle; secret values are stored in macOS Keychain only and never written to disk in the workspace
+  2. User can add key-value variables with a "secret" toggle; secret values are stored locally only and never written to disk in the workspace
   3. {{variable}} references in URL, headers, query params, body, and auth token resolve to their values from the active environment
   4. User sees a visual indicator when a {{variable}} reference in a request cannot be resolved
-**Plans**: 2 plans
+**Plans**: 3 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [ ] 04-01-PLAN.md — Rust environment I/O + secrets store + IPC commands, frontend types/store/API, variable utilities
+- [ ] 04-02-PLAN.md — Environment manager modal (two-pane), TopBar dropdown wiring, variable editor with secret toggle
+- [ ] 04-03-PLAN.md — Variable substitution in sendRequest, UrlBar highlighting overlay, unresolved variable badge
 **UI hint**: yes
 
 ### Phase 5: GitHub Auth
@@ -156,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
-| 4. Environments & Secrets | 0/? | Not started | - |
+| 4. Environments & Secrets | 0/3 | Not started | - |
 | 5. GitHub Auth | 0/? | Not started | - |
 | 6. Git Sync Engine | 0/? | Not started | - |
 | 7. Background Sync Loop | 0/? | Not started | - |
