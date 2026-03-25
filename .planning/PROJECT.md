@@ -15,6 +15,8 @@ Teams can share and collaborate on API request collections through git — witho
 - [x] Manage environment variables with secret/non-secret distinction — Validated in Phase 4: Environments & Secrets
 - [x] Variable substitution in URLs, headers, params, body, and auth — Validated in Phase 4: Environments & Secrets
 - [x] Local-only secrets layer (never committed to git) — Validated in Phase 4: Environments & Secrets
+- [x] GitHub OAuth device flow login — Validated in Phase 5: GitHub Auth
+- [x] Connect GitHub repos as workspaces (clone, sync, disconnect) — Validated in Phase 5: GitHub Auth
 
 ### Active
 
@@ -22,8 +24,8 @@ Teams can share and collaborate on API request collections through git — witho
 - [ ] Organize requests into collections and nested folders
 - ~~Manage environment variables with secret/non-secret distinction~~ → Validated
 - ~~Variable substitution in URLs, headers, params, body, and auth~~ → Validated
-- [ ] GitHub OAuth device flow login
-- [ ] Connect GitHub repos as workspaces (clone, sync, disconnect)
+- ~~GitHub OAuth device flow login~~ → Validated
+- ~~Connect GitHub repos as workspaces (clone, sync, disconnect)~~ → Validated
 - [ ] Auto-sync via git (debounced commit+push, periodic pull, focus pull)
 - [ ] File-based data model (JSON files committed to repo)
 - ~~Local-only secrets layer (never committed to git)~~ → Validated
@@ -68,13 +70,13 @@ Teams can share and collaborate on API request collections through git — witho
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| GitHub repos as workspaces | Repo access controls who can read/write — no separate user management needed | — Pending |
+| GitHub repos as workspaces | Repo access controls who can read/write — no separate user management needed | ✓ Phase 5 — OAuth device flow + git2 clone via HTTPS |
 | File-based JSON data model | Human-readable, git-diffable, version history for free | — Pending |
 | Local-only secrets layer | API keys and tokens must never be committed to git | ✓ Phase 4 — secrets stored as local JSON at app_data_dir/secrets/, stripped before workspace write |
 | Auto-sync with debounce | Users shouldn't think about saving or syncing — it just happens | — Pending |
 | Last-write-wins conflicts | Simple, predictable — notify user rather than force manual merge | — Pending |
 | HeroUI component library | Polished components out of the box, built on Tailwind | — Pending |
-| No first-launch auth gate | Users should be able to send a request immediately without GitHub login | — Pending |
+| No first-launch auth gate | Users should be able to send a request immediately without GitHub login | ✓ Phase 5 — Local workspace always available, GitHub login optional |
 
 ## Evolution
 
@@ -94,4 +96,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-25 after Phase 4 (Environments & Secrets) complete — environment CRUD, variable editor with secret toggle, {{variable}} substitution across all request fields, UrlBar highlighting overlay*
+*Last updated: 2026-03-25 after Phase 5 (GitHub Auth) complete — OAuth device flow login, repo browser with clone, workspace switcher, token expiry handling, local-only mode preserved*
