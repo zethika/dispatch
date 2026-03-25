@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 05-github-auth 05-02-PLAN.md
-last_updated: "2026-03-25T14:04:40.776Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 05-github-auth 05-03-PLAN.md
+last_updated: "2026-03-25T14:08:10.463Z"
 progress:
   total_phases: 8
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 13
-  completed_plans: 12
+  completed_plans: 13
 ---
 
 # Project State
@@ -59,6 +59,7 @@ Plan: 3 of 3
 | Phase 04-environments-secrets P02 | 5 | 2 tasks | 6 files |
 | Phase 05-github-auth P01 | 35 | 2 tasks | 16 files |
 | Phase 05-github-auth P02 | 5 | 3 tasks | 9 files |
+| Phase 05-github-auth P03 | 7 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,8 @@ Recent decisions affecting current work:
 - [Phase 05-github-auth]: API wrappers use invoke directly — bindings.ts not regenerated until tauri dev; matches existing project pattern
 - [Phase 05-github-auth]: authStore manages loginModalOpen so any component can trigger login modal (D-11 session expiry)
 - [Phase 05-github-auth]: workspaceStore.addWorkspace for immediate sidebar update after clone — no full reload needed
+- [Phase 05-github-auth]: WorkspaceEntry imported from api/workspace.ts not bindings.ts — bindings.ts is gitignored, api/workspace is stable source of truth
+- [Phase 05-github-auth]: loginModalOpen in authStore (not local TopBar state): enables D-11 session expiry toast action to open login modal from anywhere
 
 ### Pending Todos
 
@@ -121,6 +124,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-25T14:04:40.774Z
-Stopped at: Completed 05-github-auth 05-02-PLAN.md
+Last session: 2026-03-25T14:08:10.461Z
+Stopped at: Completed 05-github-auth 05-03-PLAN.md
 Resume file: None

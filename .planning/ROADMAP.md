@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI (completed 2026-03-24)
 - [x] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch (completed 2026-03-25)
 - [x] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution (completed 2026-03-25)
-- [ ] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect
+- [x] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect (completed 2026-03-25)
 - [ ] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification
 - [ ] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator
 - [ ] **Phase 8: Polish & Power Features** - cURL import/export, Cmd+K search, drag-and-drop, keyboard shortcuts
@@ -100,7 +100,7 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md — Rust backend: auth/github/workspace modules, IPC commands, deps (git2, secure-storage)
 - [x] 05-02-PLAN.md — Frontend auth flow: authStore, sonner toasts, LoginModal, RepoBrowserModal
-- [ ] 05-03-PLAN.md — Frontend workspace UI: WorkspaceSwitcher, TopBar auth states, DisconnectConfirmModal, workspace switch wiring
+- [x] 05-03-PLAN.md — Frontend workspace UI: WorkspaceSwitcher, TopBar auth states, DisconnectConfirmModal, workspace switch wiring
 **UI hint**: yes
 
 ### Phase 6: Git Sync Engine
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
 | 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
-| 5. GitHub Auth | 2/3 | In Progress|  |
+| 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
 | 6. Git Sync Engine | 0/? | Not started | - |
 | 7. Background Sync Loop | 0/? | Not started | - |
 | 8. Polish & Power Features | 0/? | Not started | - |
