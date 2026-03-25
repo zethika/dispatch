@@ -27,6 +27,51 @@ vi.mock('./stores/collectionStore', () => ({
   }),
 }));
 
+vi.mock('./stores/authStore', () => ({
+  useAuthStore: vi.fn((selector?: (s: unknown) => unknown) => {
+    const state = {
+      user: null,
+      isLoggedIn: false,
+      isLoading: false,
+      loginModalOpen: false,
+      sessionExpiredPending: false,
+      checkAuth: vi.fn(),
+      setUser: vi.fn(),
+      logout: vi.fn(),
+      openLoginModal: vi.fn(),
+      closeLoginModal: vi.fn(),
+      handleSessionExpired: vi.fn(),
+      clearSessionExpiredPending: vi.fn(),
+      getState: vi.fn(() => ({ checkAuth: vi.fn(), openLoginModal: vi.fn(), logout: vi.fn() })),
+    };
+    return selector ? selector(state) : state;
+  }),
+}));
+
+vi.mock('./stores/workspaceStore', () => ({
+  useWorkspaceStore: Object.assign(
+    vi.fn((selector?: (s: unknown) => unknown) => {
+      const state = {
+        workspaces: [],
+        activeWorkspaceId: null,
+        isLoading: false,
+        loadWorkspaces: vi.fn(),
+        addWorkspace: vi.fn(),
+        removeWorkspace: vi.fn(),
+        switchWorkspace: vi.fn(),
+        disconnectWorkspace: vi.fn(),
+      };
+      return selector ? selector(state) : state;
+    }),
+    {
+      getState: vi.fn(() => ({
+        loadWorkspaces: vi.fn(),
+        addWorkspace: vi.fn(),
+      })),
+    },
+  ),
+}));
+
 vi.mock('./stores/requestStore', () => ({
   useRequestStore: vi.fn((selector?: (s: unknown) => unknown) => {
     const state = {
