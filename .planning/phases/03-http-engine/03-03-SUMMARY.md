@@ -54,11 +54,11 @@ completed: 2026-03-25
 
 ## Performance
 
-- **Duration:** ~5 min
+- **Duration:** ~30 min (including human verification checkpoint)
 - **Started:** 2026-03-25T09:25:00Z
-- **Completed:** 2026-03-25T09:29:22Z
-- **Tasks:** 1 of 2 (Task 2 is checkpoint:human-verify — awaiting human verification)
-- **Files modified:** 3
+- **Completed:** 2026-03-25T09:54:29Z
+- **Tasks:** 2 of 2
+- **Files modified:** 4 (3 frontend + 1 Rust fix)
 
 ## Accomplishments
 
@@ -70,12 +70,16 @@ completed: 2026-03-25
 ## Task Commits
 
 1. **Task 1: JsonViewer tokenizer, StatusBar, ResponseViewer four-state display** - `6e077d6` (feat)
+2. **Task 2: Full HTTP engine visual and functional verification** - checkpoint approved by human
+
+**Deviation fix:** `a0ff39a` (fix: use u32 for duration_ms — specta forbids u64 BigInt)
 
 ## Files Created/Modified
 
 - `src/features/http/JsonViewer.tsx` - CSS tokenizer, JsonViewer component with copy button
 - `src/features/http/StatusBar.tsx` - Status code color-coding, timing, body size display
 - `src/components/layout/ResponseViewer.tsx` - Four-state response display wired to requestStore
+- `src-tauri/src/http/executor.rs` - Changed duration_ms from u64 to u32 (specta/BigInt fix)
 
 ## Decisions Made
 
@@ -86,11 +90,24 @@ completed: 2026-03-25
 
 ## Deviations from Plan
 
-None - plan executed exactly as written.
+### Auto-fixed Issues
+
+**1. [Rule 1 - Bug] Fixed u64 duration_ms causing specta BigInt serialization error**
+- **Found during:** Task 2 (human verification — Tauri app failed to compile/run)
+- **Issue:** `duration_ms` field in `HttpResponse` was typed as `u64`. tauri-specta forbids u64 (maps to BigInt in TS, not supported by specta's JSON bridge).
+- **Fix:** Changed `duration_ms: u64` to `duration_ms: u32` in `src-tauri/src/http/executor.rs`. u32 supports up to ~49 days in ms, sufficient for HTTP timeouts.
+- **Files modified:** `src-tauri/src/http/executor.rs`
+- **Verification:** App compiled and all 12 verification steps passed
+- **Committed in:** `a0ff39a` (separate fix commit applied before human verification)
+
+---
+
+**Total deviations:** 1 auto-fixed (Rule 1 — bug)
+**Impact on plan:** Required fix for the app to function. No scope creep.
 
 ## Issues Encountered
 
-None.
+None beyond the u64 deviation documented above.
 
 ## User Setup Required
 
@@ -98,10 +115,11 @@ None - no external service configuration required.
 
 ## Next Phase Readiness
 
-- Response viewer complete and wired to requestStore
-- TypeScript passes with no errors
-- Awaiting human visual verification (Task 2 checkpoint) before proceeding to Phase 4
-- HTTP request-response cycle (Phase 03) functionally complete pending verification
+- Response viewer complete, wired to requestStore, and human-verified end-to-end
+- All 12 verification steps passed: GET/POST, status colors (2xx/4xx/5xx), JSON highlighting, headers tab, network errors, bearer auth, query params
+- TypeScript passes with no errors; Rust compiles cleanly with u32 fix
+- HTTP request-response cycle (Phase 03) is fully complete
+- Ready to proceed to Phase 04 (environment variables)
 
 ---
 *Phase: 03-http-engine*
