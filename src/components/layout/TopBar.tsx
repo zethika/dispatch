@@ -1,13 +1,34 @@
 import { useState, useEffect } from 'react';
-import { Button, Chip, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@heroui/react';
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Avatar,
+  Spinner,
+} from '@heroui/react';
+import { toast } from 'sonner';
 import { useEnvironmentStore } from '../../stores/environmentStore';
 import { useCollectionStore } from '../../stores/collectionStore';
+import { useAuthStore } from '../../stores/authStore';
 import EnvironmentModal from '../../features/environments/EnvironmentModal';
+import LoginModal from '../../features/auth/LoginModal';
 
 export default function TopBar() {
   const [modalOpen, setModalOpen] = useState(false);
   const { environments, activeEnvSlug, setActiveEnvironment } = useEnvironmentStore();
   const workspaceId = useCollectionStore((s) => s.workspaceId);
+  const {
+    user,
+    isLoggedIn,
+    isLoading,
+    loginModalOpen,
+    openLoginModal,
+    closeLoginModal,
+    sessionExpiredPending,
+    clearSessionExpiredPending,
+  } = useAuthStore();
 
   // Load environments when workspaceId becomes available
   useEffect(() => {
@@ -16,8 +37,23 @@ export default function TopBar() {
     }
   }, [workspaceId]);
 
+  // D-11: Show session expiry toast with clickable "Sign in" action
+  useEffect(() => {
+    if (sessionExpiredPending) {
+      toast('GitHub session expired — Sign in again', {
+        action: {
+          label: 'Sign in',
+          onClick: () => useAuthStore.getState().openLoginModal(),
+        },
+      });
+      clearSessionExpiredPending();
+    }
+  }, [sessionExpiredPending, clearSessionExpiredPending]);
+
   const activeEnvName =
-    activeEnvSlug ? (environments.find((e) => e.slug === activeEnvSlug)?.name ?? 'No Environment') : 'No Environment';
+    activeEnvSlug
+      ? (environments.find((e) => e.slug === activeEnvSlug)?.name ?? 'No Environment')
+      : 'No Environment';
 
   const handleSelectEnv = (key: string) => {
     if (!workspaceId) return;
@@ -30,6 +66,11 @@ export default function TopBar() {
     }
   };
 
+  const handleLogout = async () => {
+    await useAuthStore.getState().logout();
+    toast.success('Signed out');
+  };
+
   return (
     <div
       data-testid="topbar"
@@ -40,9 +81,38 @@ export default function TopBar() {
         Dispatch
       </span>
 
-      <Button size="sm" color="primary" variant="flat" className="ml-2">
-        Connect GitHub
-      </Button>
+      {isLoading ? (
+        <Spinner size="sm" />
+      ) : isLoggedIn && user ? (
+        <Dropdown>
+          <DropdownTrigger>
+            <Avatar
+              as="button"
+              size="sm"
+              src={user.avatar_url}
+              name={user.login.charAt(0).toUpperCase()}
+              className="cursor-pointer"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="User menu">
+            <DropdownItem key="username" isReadOnly className="opacity-100">
+              <span className="font-semibold text-sm">@{user.login}</span>
+            </DropdownItem>
+            <DropdownItem
+              key="signout"
+              color="danger"
+              variant="light"
+              onPress={() => void handleLogout()}
+            >
+              Sign out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      ) : (
+        <Button size="sm" color="primary" variant="flat" className="ml-2" onPress={openLoginModal}>
+          Connect GitHub
+        </Button>
+      )}
 
       <Dropdown>
         <DropdownTrigger>
@@ -84,10 +154,6 @@ export default function TopBar() {
 
       <div className="flex-1" />
 
-      <Chip variant="flat" color="default" size="sm">
-        Local only
-      </Chip>
-
       {workspaceId && (
         <EnvironmentModal
           isOpen={modalOpen}
@@ -95,6 +161,8 @@ export default function TopBar() {
           workspaceId={workspaceId}
         />
       )}
+
+      <LoginModal isOpen={loginModalOpen} onClose={closeLoginModal} />
     </div>
   );
 }
