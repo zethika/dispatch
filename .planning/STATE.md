@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 05-github-auth 05-01-PLAN.md
-last_updated: "2026-03-25T13:57:41.713Z"
+stopped_at: Completed 05-github-auth 05-02-PLAN.md
+last_updated: "2026-03-25T14:04:40.776Z"
 progress:
   total_phases: 8
   completed_phases: 4
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Position
 
 Phase: 05 (github-auth) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Plan: 2 of 3
 | Phase 04-environments-secrets P03 | 15 | 2 tasks | 3 files |
 | Phase 04-environments-secrets P02 | 5 | 2 tasks | 6 files |
 | Phase 05-github-auth P01 | 35 | 2 tasks | 16 files |
+| Phase 05-github-auth P02 | 5 | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,9 @@ Recent decisions affecting current work:
 - [Phase 05-github-auth]: tauri-plugin-secure-storage API uses get_item/set_item/remove_item with OptionsRequest struct; models module private, types re-exported from crate root
 - [Phase 05-github-auth]: reqwest .json() feature not enabled in tauri-plugin-http re-export — use .text() + serde_json::from_str for all JSON responses
 - [Phase 05-github-auth]: git2 vendored-libgit2 feature enabled — no system libgit2 required on user machines
+- [Phase 05-github-auth]: API wrappers use invoke directly — bindings.ts not regenerated until tauri dev; matches existing project pattern
+- [Phase 05-github-auth]: authStore manages loginModalOpen so any component can trigger login modal (D-11 session expiry)
+- [Phase 05-github-auth]: workspaceStore.addWorkspace for immediate sidebar update after clone — no full reload needed
 
 ### Pending Todos
 
@@ -117,6 +121,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-25T13:57:41.710Z
-Stopped at: Completed 05-github-auth 05-01-PLAN.md
+Last session: 2026-03-25T14:04:40.774Z
+Stopped at: Completed 05-github-auth 05-02-PLAN.md
 Resume file: None
