@@ -6,7 +6,7 @@ use crate::collections::types::{KeyValueEntry, RequestAuth, RequestBody};
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct HttpResponse {
     pub status: u16,
-    pub duration_ms: u64,
+    pub duration_ms: u32,
     pub headers: Vec<KeyValueEntry>,
     pub body: String,
 }
@@ -63,7 +63,7 @@ pub async fn execute(
     }
 
     let response = builder.send().await?;
-    let duration_ms = start.elapsed().as_millis() as u64;
+    let duration_ms = start.elapsed().as_millis() as u32;
     let status = response.status().as_u16();
 
     // Collect response headers
