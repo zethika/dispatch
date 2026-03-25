@@ -26,7 +26,7 @@ export const useEnvironmentStore = create<EnvironmentStore>((set, get) => ({
     set({ environments });
 
     // Restore persisted active environment selection
-    const store = await load('dispatch-prefs.json', { autoSave: true });
+    const store = await load('dispatch-prefs.json');
     const savedSlug = await store.get<string | null>(`activeEnv:${workspaceId}`);
 
     if (savedSlug && environments.some((e) => e.slug === savedSlug)) {
@@ -40,7 +40,7 @@ export const useEnvironmentStore = create<EnvironmentStore>((set, get) => ({
   setActiveEnvironment: async (workspaceId: string, slug: string | null) => {
     set({ activeEnvSlug: slug });
 
-    const store = await load('dispatch-prefs.json', { autoSave: true });
+    const store = await load('dispatch-prefs.json');
     await store.set(`activeEnv:${workspaceId}`, slug);
 
     if (slug !== null) {

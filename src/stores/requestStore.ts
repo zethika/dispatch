@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import * as httpApi from '../api/http';
 import type { HttpResponse } from '../api/http';
 import type { KeyValueEntry, RequestBody, RequestAuth, RequestFile } from '../types/collections';
+import { substitute } from '../utils/variables';
+import { useEnvironmentStore } from './environmentStore';
 
 export type ResponseState =
   | { status: 'idle' }
@@ -74,9 +76,33 @@ export const useRequestStore = create<RequestStore>((set, get) => ({
 
   sendRequest: async () => {
     const { method, url, headers, queryParams, body, auth } = get();
+    const vars = useEnvironmentStore.getState().activeEnvVariables;
+
+    // Substitute variables in all fields (per D-14, ENV-04)
+    const resolvedUrl = substitute(url, vars);
+    const resolvedHeaders = headers.map((h) =>
+      h.enabled
+        ? { ...h, key: substitute(h.key, vars), value: substitute(h.value, vars) }
+        : h
+    );
+    const resolvedQueryParams = queryParams.map((p) =>
+      p.enabled
+        ? { ...p, key: substitute(p.key, vars), value: substitute(p.value, vars) }
+        : p
+    );
+    const resolvedBody = body ? { ...body, content: substitute(body.content, vars) } : body;
+    const resolvedAuth = auth ? { ...auth, token: substitute(auth.token, vars) } : auth;
+
     set({ response: { status: 'loading' } });
     try {
-      const data = await httpApi.sendRequest({ method, url, headers, queryParams, body, auth });
+      const data = await httpApi.sendRequest({
+        method,
+        url: resolvedUrl,
+        headers: resolvedHeaders,
+        queryParams: resolvedQueryParams,
+        body: resolvedBody,
+        auth: resolvedAuth,
+      });
       set({ response: { status: 'success', data } });
     } catch (e) {
       set({ response: { status: 'error', message: String(e) } });
