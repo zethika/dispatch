@@ -6,6 +6,7 @@ import RightPanel from './components/layout/RightPanel';
 import { ensureDefaultWorkspace } from './api/collections';
 import { useCollectionStore } from './stores/collectionStore';
 import { useAuthStore } from './stores/authStore';
+import { useWorkspaceStore } from './stores/workspaceStore';
 
 export default function App() {
   const { workspaceId, loadWorkspace } = useCollectionStore();
@@ -18,7 +19,11 @@ export default function App() {
   useEffect(() => {
     if (workspaceId) return;
     ensureDefaultWorkspace()
-      .then((id) => loadWorkspace(id))
+      .then((id) => {
+        // Load the workspace registry so WorkspaceSwitcher populates
+        void useWorkspaceStore.getState().loadWorkspaces();
+        return loadWorkspace(id);
+      })
       .catch(console.error);
   }, [workspaceId, loadWorkspace]);
 

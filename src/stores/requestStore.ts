@@ -41,6 +41,7 @@ interface RequestStore {
   setAuth: (a: RequestAuth | null) => void;
   sendRequest: () => Promise<void>;
   clearResponse: () => void;
+  clearActiveRequest: () => void;
 }
 
 export const useRequestStore = create<RequestStore>((set, get) => ({
@@ -110,4 +111,16 @@ export const useRequestStore = create<RequestStore>((set, get) => ({
   },
 
   clearResponse: () => set({ response: { status: 'idle' } }),
+
+  clearActiveRequest: () =>
+    set({
+      method: 'GET',
+      url: '',
+      headers: [],
+      queryParams: [],
+      body: null,
+      auth: null,
+      response: { status: 'idle' },
+      activeRequestMeta: null,
+    }),
 }));
