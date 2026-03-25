@@ -43,7 +43,7 @@ Declared values (must be multiples of 4):
 
 Exceptions:
 - Avatar circle in TopBar: 32px diameter (8px Tailwind `w-8 h-8`) — fixed size, not a spacing token
-- Sync status dot in workspace switcher: 6px diameter (`w-1.5 h-1.5`) — matches existing environment active-dot pattern in TopBar.tsx line 75
+- Sync status dot in workspace switcher: 6px diameter (`w-1.5 h-1.5`) — matches existing environment active-dot pattern in TopBar.tsx line 75. Fixed decorative element, no layout grid impact.
 - Touch target for avatar button: 36px minimum height (HeroUI `size="sm"` Button default)
 
 Source: Existing codebase scan — TopBar.tsx uses `h-12` (48px) bar, `px-4` (16px) padding, `gap-3` (12px). 8-point scale in effect.
@@ -124,17 +124,21 @@ Toast system (first use in this phase):
 
 ### LoginModal (D-01, D-02)
 
+Focal point: The device code field (Display 24px/600, centered in modal body) is the primary visual anchor. All surrounding elements (spinner, helper text, CTA button) orbit this field. The modal is narrow (default HeroUI Modal width) and vertically centered on screen.
+
 | State | UI |
 |-------|----|
 | Idle (before initiate) | Not shown |
 | Step 1 — Fetching code | Modal open, Spinner centered, "Requesting code..." |
-| Step 2 — Awaiting approval | Device code in Display-size field (24px/600), "Copy & Open GitHub" button (primary filled), "Waiting for approval..." spinner, Cancel button (light variant) |
+| Step 2 — Awaiting approval | Device code in Display-size field (24px/600), "Copy & Open GitHub" button (primary filled), "Waiting for approval..." spinner, Cancel Sign-in button (light variant) |
 | Success | Modal auto-dismisses, `toast.success("Signed in as @{username}")` |
 | Expired | Modal stays open, error message "Code expired. Try again." + retry button |
 | Cancelled (user) | Modal closes, no toast |
 | Network error | Modal stays open, error message "Could not reach GitHub. Check your connection." |
 
 ### RepoBrowserModal (D-04, D-05)
+
+Focal point: The search input at the top of the modal body is the primary visual anchor. It is the first interactive element and immediately reduces the visible repo list. The repo list below it is the secondary focal area; each row's "Connect" button is the terminal action target.
 
 | State | UI |
 |-------|----|
@@ -178,7 +182,7 @@ Toast system (first use in this phase):
 | Login modal heading | "Sign in with GitHub" |
 | Login modal step 1 subheading | "Enter this code at github.com/login/device" |
 | Login modal polling label | "Waiting for approval..." |
-| Login modal cancel | "Cancel" |
+| Login modal cancel | "Cancel Sign-in" |
 | Repo browser modal heading | "Connect a Repository" |
 | Repo browser search placeholder | "Search repositories..." |
 | Repo browser private badge | "Private" |
@@ -190,12 +194,12 @@ Toast system (first use in this phase):
 | Disconnect confirmation heading | "Disconnect {repo-name}?" |
 | Disconnect confirmation body | "This removes the local copy. Your data is still on GitHub." |
 | Disconnect confirm button | "Disconnect" |
-| Disconnect cancel button | "Cancel" |
+| Disconnect cancel button | "Keep Workspace" |
 | Avatar dropdown sign out | "Sign out" |
 | Toast: login success | "Signed in as @{username}" |
 | Toast: session expired | "GitHub session expired — Sign in again" |
 | Toast: session expired action | "Sign in" |
-| Empty state: no repos | "No repositories found." |
+| Empty state: no repos | "No repositories found. Make sure your GitHub account has accessible repos." |
 | Empty state: filter no match | "No repos match '{query}'" |
 | Error: network failure in login | "Could not reach GitHub. Check your connection." |
 | Error: code expired | "Code expired. Try again." |
