@@ -11,9 +11,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **HTTP-01**: User can send GET, POST, PUT, and DELETE requests from the request editor
 - [x] **HTTP-02**: User can enter a URL with variable highlighting ({{var}} shown distinctly)
-- [ ] **HTTP-03**: User can add, edit, and toggle query parameters via key-value editor
-- [ ] **HTTP-04**: User can add, edit, and toggle request headers via key-value editor
-- [ ] **HTTP-05**: User can write a JSON request body with syntax highlighting (shown for POST/PUT)
+- [x] **HTTP-03**: User can add, edit, and toggle query parameters via key-value editor
+- [x] **HTTP-04**: User can add, edit, and toggle request headers via key-value editor
+- [x] **HTTP-05**: User can write a JSON request body with syntax highlighting (shown for POST/PUT)
 - [x] **HTTP-06**: User can set bearer token authentication for a request
 - [x] **HTTP-07**: User sees a loading state while a request is in flight
 
@@ -36,11 +36,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Environments
 
-- [ ] **ENV-01**: User can create, edit, and delete environments for a workspace
-- [ ] **ENV-02**: User can select an active environment from the top bar (global to workspace)
+- [x] **ENV-01**: User can create, edit, and delete environments for a workspace
+- [x] **ENV-02**: User can select an active environment from the top bar (global to workspace)
 - [ ] **ENV-03**: User can add variables with a key-value editor and a "secret" toggle per variable
-- [ ] **ENV-04**: {{variable}} substitution works in URL, headers, query params, body, and auth token
-- [ ] **ENV-05**: Secret variable values are stored locally only and never committed to git
+- [x] **ENV-04**: {{variable}} substitution works in URL, headers, query params, body, and auth token
+- [x] **ENV-05**: Secret variable values are stored locally only and never committed to git
 - [ ] **ENV-06**: User sees a visual indicator when a variable in a request cannot be resolved
 
 ### GitHub Auth
@@ -147,9 +147,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COLL-04 | Phase 2 | Complete |
 | HTTP-01 | Phase 3 | Complete |
 | HTTP-02 | Phase 3 | Complete |
-| HTTP-03 | Phase 3 | Pending |
-| HTTP-04 | Phase 3 | Pending |
-| HTTP-05 | Phase 3 | Pending |
+| HTTP-03 | Phase 3 | Complete |
+| HTTP-04 | Phase 3 | Complete |
+| HTTP-05 | Phase 3 | Complete |
 | HTTP-06 | Phase 3 | Complete |
 | HTTP-07 | Phase 3 | Complete |
 | RESP-01 | Phase 3 | Complete |
@@ -157,11 +157,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RESP-03 | Phase 3 | Complete |
 | RESP-04 | Phase 3 | Complete |
 | RESP-05 | Phase 3 | Complete |
-| ENV-01 | Phase 4 | Pending |
-| ENV-02 | Phase 4 | Pending |
+| ENV-01 | Phase 4 | Complete |
+| ENV-02 | Phase 4 | Complete |
 | ENV-03 | Phase 4 | Pending |
-| ENV-04 | Phase 4 | Pending |
-| ENV-05 | Phase 4 | Pending |
+| ENV-04 | Phase 4 | Complete |
+| ENV-05 | Phase 4 | Complete |
 | ENV-06 | Phase 4 | Pending |
 | AUTH-01 | Phase 5 | Pending |
 | AUTH-02 | Phase 5 | Pending |

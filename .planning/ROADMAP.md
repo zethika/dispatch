@@ -81,7 +81,7 @@ Plans:
   4. User sees a visual indicator when a {{variable}} reference in a request cannot be resolved
 **Plans**: 3 plans
 Plans:
-- [ ] 04-01-PLAN.md — Rust environment I/O + secrets store + IPC commands, frontend types/store/API, variable utilities
+- [x] 04-01-PLAN.md — Rust environment I/O + secrets store + IPC commands, frontend types/store/API, variable utilities
 - [ ] 04-02-PLAN.md — Environment manager modal (two-pane), TopBar dropdown wiring, variable editor with secret toggle
 - [ ] 04-03-PLAN.md — Variable substitution in sendRequest, UrlBar highlighting overlay, unresolved variable badge
 **UI hint**: yes
