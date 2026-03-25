@@ -45,11 +45,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### GitHub Auth
 
-- [ ] **AUTH-01**: User can log in via GitHub OAuth device flow (browser-based code entry)
-- [ ] **AUTH-02**: User can list accessible GitHub repos (personal + org) after login
-- [ ] **AUTH-03**: User can connect a GitHub repo as a workspace (clones locally)
-- [ ] **AUTH-04**: User can disconnect a workspace (removes local clone)
-- [ ] **AUTH-05**: User can switch between connected workspaces via sidebar switcher
+- [x] **AUTH-01**: User can log in via GitHub OAuth device flow (browser-based code entry)
+- [x] **AUTH-02**: User can list accessible GitHub repos (personal + org) after login
+- [x] **AUTH-03**: User can connect a GitHub repo as a workspace (clones locally)
+- [x] **AUTH-04**: User can disconnect a workspace (removes local clone)
+- [x] **AUTH-05**: User can switch between connected workspaces via sidebar switcher
 
 ### Sync
 
@@ -163,11 +163,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENV-04 | Phase 4 | Complete |
 | ENV-05 | Phase 4 | Complete |
 | ENV-06 | Phase 4 | Complete |
-| AUTH-01 | Phase 5 | Pending |
-| AUTH-02 | Phase 5 | Pending |
-| AUTH-03 | Phase 5 | Pending |
-| AUTH-04 | Phase 5 | Pending |
-| AUTH-05 | Phase 5 | Pending |
+| AUTH-01 | Phase 5 | Complete |
+| AUTH-02 | Phase 5 | Complete |
+| AUTH-03 | Phase 5 | Complete |
+| AUTH-04 | Phase 5 | Complete |
+| AUTH-05 | Phase 5 | Complete |
 | SYNC-04 | Phase 6 | Pending |
 | SYNC-05 | Phase 6 | Pending |
 | SYNC-01 | Phase 7 | Pending |

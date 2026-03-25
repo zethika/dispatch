@@ -98,7 +98,7 @@ Plans:
   5. App continues to function in local-only mode if the user has not logged in to GitHub
 **Plans**: 3 plans
 Plans:
-- [ ] 05-01-PLAN.md — Rust backend: auth/github/workspace modules, IPC commands, deps (git2, secure-storage)
+- [x] 05-01-PLAN.md — Rust backend: auth/github/workspace modules, IPC commands, deps (git2, secure-storage)
 - [ ] 05-02-PLAN.md — Frontend auth flow: authStore, sonner toasts, LoginModal, RepoBrowserModal
 - [ ] 05-03-PLAN.md — Frontend workspace UI: WorkspaceSwitcher, TopBar auth states, DisconnectConfirmModal, workspace switch wiring
 **UI hint**: yes
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
 | 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
-| 5. GitHub Auth | 0/3 | Not started | - |
+| 5. GitHub Auth | 1/3 | In Progress|  |
 | 6. Git Sync Engine | 0/? | Not started | - |
 | 7. Background Sync Loop | 0/? | Not started | - |
 | 8. Polish & Power Features | 0/? | Not started | - |
