@@ -65,7 +65,7 @@ Plans:
   5. User sees a raw text fallback for non-JSON responses
 **Plans**: 3 plans
 Plans:
-- [ ] 03-01-PLAN.md — Rust HTTP executor (send_request, load_request, save_request commands), requestStore, API wrappers
+- [x] 03-01-PLAN.md — Rust HTTP executor (send_request, load_request, save_request commands), requestStore, API wrappers
 - [ ] 03-02-PLAN.md — Request editor UI (UrlBar, KeyValueEditor, BodyEditor, AuthEditor, tab wiring)
 - [ ] 03-03-PLAN.md — Response viewer UI (StatusBar, JsonViewer tokenizer, four-state display)
 **UI hint**: yes
