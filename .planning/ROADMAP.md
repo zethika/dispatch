@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Tauri project scaffolding with working IPC, HeroUI, and app shell layout (completed 2026-03-24)
 - [x] **Phase 2: Data Model** - File-per-request JSON schema, Rust read/write commands, and collection tree UI (completed 2026-03-24)
-- [ ] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch
+- [x] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch (completed 2026-03-25)
 - [ ] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution
 - [ ] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect
 - [ ] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification
@@ -66,8 +66,8 @@ Plans:
 **Plans**: 3 plans
 Plans:
 - [x] 03-01-PLAN.md — Rust HTTP executor (send_request, load_request, save_request commands), requestStore, API wrappers
-- [ ] 03-02-PLAN.md — Request editor UI (UrlBar, KeyValueEditor, BodyEditor, AuthEditor, tab wiring)
-- [ ] 03-03-PLAN.md — Response viewer UI (StatusBar, JsonViewer tokenizer, four-state display)
+- [x] 03-02-PLAN.md — Request editor UI (UrlBar, KeyValueEditor, BodyEditor, AuthEditor, tab wiring)
+- [x] 03-03-PLAN.md — Response viewer UI (StatusBar, JsonViewer tokenizer, four-state display)
 **UI hint**: yes
 
 ### Phase 4: Environments & Secrets
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-24 |
 | 2. Data Model | 2/2 | Complete   | 2026-03-24 |
-| 3. HTTP Engine | 0/3 | Not started | - |
+| 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
 | 4. Environments & Secrets | 0/? | Not started | - |
 | 5. GitHub Auth | 0/? | Not started | - |
 | 6. Git Sync Engine | 0/? | Not started | - |

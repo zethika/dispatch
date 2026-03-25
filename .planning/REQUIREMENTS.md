@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### HTTP Core
 
 - [x] **HTTP-01**: User can send GET, POST, PUT, and DELETE requests from the request editor
-- [ ] **HTTP-02**: User can enter a URL with variable highlighting ({{var}} shown distinctly)
+- [x] **HTTP-02**: User can enter a URL with variable highlighting ({{var}} shown distinctly)
 - [ ] **HTTP-03**: User can add, edit, and toggle query parameters via key-value editor
 - [ ] **HTTP-04**: User can add, edit, and toggle request headers via key-value editor
 - [ ] **HTTP-05**: User can write a JSON request body with syntax highlighting (shown for POST/PUT)
@@ -19,11 +19,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Response
 
-- [ ] **RESP-01**: User sees the response status code with color coding (2xx green, 4xx yellow, 5xx red)
+- [x] **RESP-01**: User sees the response status code with color coding (2xx green, 4xx yellow, 5xx red)
 - [x] **RESP-02**: User sees the response time in milliseconds
-- [ ] **RESP-03**: User sees the response body with JSON syntax highlighting and formatting
+- [x] **RESP-03**: User sees the response body with JSON syntax highlighting and formatting
 - [x] **RESP-04**: User sees response headers in a collapsible section
-- [ ] **RESP-05**: User sees raw text fallback for non-JSON responses
+- [x] **RESP-05**: User sees raw text fallback for non-JSON responses
 
 ### Collections
 
@@ -146,17 +146,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COLL-03 | Phase 2 | Complete |
 | COLL-04 | Phase 2 | Complete |
 | HTTP-01 | Phase 3 | Complete |
-| HTTP-02 | Phase 3 | Pending |
+| HTTP-02 | Phase 3 | Complete |
 | HTTP-03 | Phase 3 | Pending |
 | HTTP-04 | Phase 3 | Pending |
 | HTTP-05 | Phase 3 | Pending |
 | HTTP-06 | Phase 3 | Complete |
 | HTTP-07 | Phase 3 | Complete |
-| RESP-01 | Phase 3 | Pending |
+| RESP-01 | Phase 3 | Complete |
 | RESP-02 | Phase 3 | Complete |
-| RESP-03 | Phase 3 | Pending |
+| RESP-03 | Phase 3 | Complete |
 | RESP-04 | Phase 3 | Complete |
-| RESP-05 | Phase 3 | Pending |
+| RESP-05 | Phase 3 | Complete |
 | ENV-01 | Phase 4 | Pending |
 | ENV-02 | Phase 4 | Pending |
 | ENV-03 | Phase 4 | Pending |
