@@ -1,7 +1,10 @@
+mod auth;
 mod collections;
 mod commands;
 mod environments;
+mod github;
 mod http;
+mod workspace;
 
 use tauri::Manager;
 use tauri_specta::{collect_commands, Builder};
@@ -34,6 +37,14 @@ pub fn run() {
             commands::environments::rename_environment,
             commands::environments::load_secret_values,
             commands::environments::save_secret_values,
+            commands::auth::initiate_login,
+            commands::auth::poll_login,
+            commands::auth::logout,
+            commands::auth::get_auth_state,
+            commands::github::list_repos,
+            commands::workspace::connect_workspace,
+            commands::workspace::disconnect_workspace,
+            commands::workspace::list_workspaces,
         ]);
 
     #[cfg(debug_assertions)]
@@ -44,6 +55,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_secure_storage::init())
         .invoke_handler(builder.invoke_handler())
         .setup(move |app| {
             builder.mount_events(app);
