@@ -1,0 +1,151 @@
+import { Button, Spinner } from '@heroui/react';
+import { useSyncStore } from '../../stores/syncStore';
+import { useWorkspaceStore } from '../../stores/workspaceStore';
+
+// Inline SVG icons (project convention — no icon packages)
+
+const CheckCircleIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-primary"
+  >
+    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M5 8L7 10L11 6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const WarningTriangleIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-warning"
+  >
+    <path
+      d="M8 2L14 13H2L8 2Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M8 6V9"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <circle cx="8" cy="11.5" r="0.75" fill="currentColor" />
+  </svg>
+);
+
+const XCircleIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-danger"
+  >
+    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const NoSyncIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-default-400"
+  >
+    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 2" />
+    <path
+      d="M5 8H11"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+export default function SyncStatusChip() {
+  const getStatus = useSyncStore((s) => s.getStatus);
+  const activeWorkspace = useWorkspaceStore((s) =>
+    s.workspaces.find((w) => w.id === s.activeWorkspaceId)
+  );
+
+  const workspaceId = activeWorkspace?.id ?? null;
+  const isLocal = activeWorkspace?.is_local ?? true;
+  const status = workspaceId ? getStatus(workspaceId, isLocal) : 'local';
+
+  const handlePress = () => {
+    if (workspaceId && status !== 'local') {
+      void useSyncStore.getState().triggerSync(workspaceId);
+    }
+  };
+
+  if (status === 'local') {
+    return (
+      <Button
+        size="sm"
+        variant="flat"
+        isDisabled
+        className="gap-2 cursor-default"
+        startContent={<NoSyncIcon />}
+      >
+        Local only
+      </Button>
+    );
+  }
+
+  const icon =
+    status === 'syncing' ? (
+      <Spinner size="sm" />
+    ) : status === 'synced' ? (
+      <CheckCircleIcon />
+    ) : status === 'conflict' ? (
+      <WarningTriangleIcon />
+    ) : (
+      <XCircleIcon />
+    );
+
+  const label =
+    status === 'syncing'
+      ? 'Syncing'
+      : status === 'synced'
+        ? 'Synced'
+        : status === 'conflict'
+          ? 'Conflict'
+          : 'Error';
+
+  return (
+    <Button
+      size="sm"
+      variant="flat"
+      className="gap-2"
+      startContent={icon}
+      onPress={handlePress}
+    >
+      {label}
+    </Button>
+  );
+}
