@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: HTTP Engine** - Send requests and view responses — 60 seconds to first request from launch (completed 2026-03-25)
 - [x] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution (completed 2026-03-25)
 - [x] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect (completed 2026-03-25)
-- [ ] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification
+- [x] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification (completed 2026-03-26)
 - [ ] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator
 - [ ] **Phase 8: Polish & Power Features** - cURL import/export, Cmd+K search, drag-and-drop, keyboard shortcuts
 
@@ -115,7 +115,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 06-01-PLAN.md — Rust git actor (mpsc channel, spawn_blocking ops), commit/push/pull with conflict resolution, IPC commands
-- [ ] 06-02-PLAN.md — Frontend sync store, SyncStatusChip, TopBar/WorkspaceSwitcher integration, conflict toasts, pull-on-switch
+- [x] 06-02-PLAN.md — Frontend sync store, SyncStatusChip, TopBar/WorkspaceSwitcher integration, conflict toasts, pull-on-switch
 **UI hint**: yes
 
 ### Phase 7: Background Sync Loop
@@ -160,6 +160,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
 | 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
-| 6. Git Sync Engine | 1/2 | In Progress|  |
+| 6. Git Sync Engine | 2/2 | Complete   | 2026-03-26 |
 | 7. Background Sync Loop | 0/? | Not started | - |
 | 8. Polish & Power Features | 0/? | Not started | - |

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 06-git-sync-engine/06-01-PLAN.md
-last_updated: "2026-03-26T10:48:13.532Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 06-git-sync-engine/06-02-PLAN.md
+last_updated: "2026-03-26T10:52:41.045Z"
 progress:
   total_phases: 8
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 15
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State
@@ -61,6 +61,7 @@ Plan: 2 of 2
 | Phase 05-github-auth P02 | 5 | 3 tasks | 9 files |
 | Phase 05-github-auth P03 | 7 | 2 tasks | 7 files |
 | Phase 06-git-sync-engine P01 | 4 | 2 tasks | 8 files |
+| Phase 06-git-sync-engine P02 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,8 @@ Recent decisions affecting current work:
 - [Phase 05-github-auth]: loginModalOpen in authStore (not local TopBar state): enables D-11 session expiry toast action to open login modal from anywhere
 - [Phase 06-git-sync-engine]: tokio sync feature added explicitly — tauri async_runtime does not re-export tokio::sync types (mpsc/oneshot)
 - [Phase 06-git-sync-engine]: commit_all returns bool, push_to_remote is separate — actor combines sequentially, skipping push if nothing to commit
+- [Phase 06-git-sync-engine]: SyncStatusChip placed after flex-1 spacer in TopBar: right-aligned between spacer and modals per UI-SPEC position contract
+- [Phase 06-git-sync-engine]: triggerPull is fire-and-forget (void) in switchWorkspace: collection/environment reload proceeds immediately with local state, pull result arrives via Tauri event
 
 ### Pending Todos
 
@@ -127,6 +130,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T10:48:13.529Z
-Stopped at: Completed 06-git-sync-engine/06-01-PLAN.md
+Last session: 2026-03-26T10:52:41.042Z
+Stopped at: Completed 06-git-sync-engine/06-02-PLAN.md
 Resume file: None
