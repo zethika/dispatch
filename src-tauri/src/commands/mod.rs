@@ -3,6 +3,7 @@ pub mod collections;
 pub mod environments;
 pub mod github;
 pub mod http;
+pub mod sync;
 pub mod workspace;
 
 #[tauri::command]

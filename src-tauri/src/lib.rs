@@ -46,6 +46,9 @@ pub fn run() {
             commands::workspace::connect_workspace,
             commands::workspace::disconnect_workspace,
             commands::workspace::list_workspaces,
+            commands::sync::sync_workspace,
+            commands::sync::pull_workspace,
+            commands::sync::get_sync_status,
         ]);
 
     #[cfg(debug_assertions)]
@@ -60,6 +63,8 @@ pub fn run() {
         .invoke_handler(builder.invoke_handler())
         .setup(move |app| {
             builder.mount_events(app);
+            // Initialize the singleton git sync actor (D-01/D-02)
+            app.manage(sync::ActorHandle::new());
             // First-launch: ensure default workspace exists (D-08)
             let app_data = app.path().app_data_dir().expect("Failed to get app data dir");
             collections::io::ensure_default_workspace(&app_data)
