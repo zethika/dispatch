@@ -685,6 +685,7 @@ dependencies = [
  "tauri-plugin-store",
  "tauri-specta",
  "tempfile",
+ "tokio",
  "uuid",
 ]
 

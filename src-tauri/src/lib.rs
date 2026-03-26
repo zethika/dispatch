@@ -4,6 +4,7 @@ mod commands;
 mod environments;
 mod github;
 mod http;
+mod sync;
 mod workspace;
 
 use tauri::Manager;
