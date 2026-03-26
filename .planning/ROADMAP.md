@@ -114,7 +114,7 @@ Plans:
   4. When a last-write-wins conflict is resolved, the user receives a notification identifying the affected file
 **Plans**: 2 plans
 Plans:
-- [ ] 06-01-PLAN.md — Rust git actor (mpsc channel, spawn_blocking ops), commit/push/pull with conflict resolution, IPC commands
+- [x] 06-01-PLAN.md — Rust git actor (mpsc channel, spawn_blocking ops), commit/push/pull with conflict resolution, IPC commands
 - [ ] 06-02-PLAN.md — Frontend sync store, SyncStatusChip, TopBar/WorkspaceSwitcher integration, conflict toasts, pull-on-switch
 **UI hint**: yes
 
@@ -160,6 +160,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 3. HTTP Engine | 3/3 | Complete   | 2026-03-25 |
 | 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
-| 6. Git Sync Engine | 0/2 | Not started | - |
+| 6. Git Sync Engine | 1/2 | In Progress|  |
 | 7. Background Sync Loop | 0/? | Not started | - |
 | 8. Polish & Power Features | 0/? | Not started | - |

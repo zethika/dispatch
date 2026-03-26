@@ -56,8 +56,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **SYNC-01**: Changes are automatically committed and pushed after ~2-3s of inactivity (debounce)
 - [ ] **SYNC-02**: Workspace pulls from remote on a regular interval (~30s)
 - [ ] **SYNC-03**: Workspace pulls immediately on focus/switch
-- [ ] **SYNC-04**: Sync status indicator visible in the UI (synced / syncing / offline / conflict)
-- [ ] **SYNC-05**: File-level last-write-wins conflict resolution with user notification
+- [x] **SYNC-04**: Sync status indicator visible in the UI (synced / syncing / offline / conflict)
+- [x] **SYNC-05**: File-level last-write-wins conflict resolution with user notification
 - [ ] **SYNC-06**: Changes queue locally when offline and push when connectivity returns
 
 ### Import/Export
@@ -168,8 +168,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-03 | Phase 5 | Complete |
 | AUTH-04 | Phase 5 | Complete |
 | AUTH-05 | Phase 5 | Complete |
-| SYNC-04 | Phase 6 | Pending |
-| SYNC-05 | Phase 6 | Pending |
+| SYNC-04 | Phase 6 | Complete |
+| SYNC-05 | Phase 6 | Complete |
 | SYNC-01 | Phase 7 | Pending |
 | SYNC-02 | Phase 7 | Pending |
 | SYNC-03 | Phase 7 | Pending |
