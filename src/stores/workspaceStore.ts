@@ -4,6 +4,7 @@ import type { WorkspaceEntry } from '../api/workspace';
 import { useCollectionStore } from './collectionStore';
 import { useEnvironmentStore } from './environmentStore';
 import { useRequestStore } from './requestStore';
+import { useSyncStore } from './syncStore';
 
 interface WorkspaceState {
   workspaces: WorkspaceEntry[];
@@ -36,6 +37,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   switchWorkspace: async (workspaceId: string) => {
     set({ activeWorkspaceId: workspaceId });
+    // D-12: Pull latest remote changes on workspace switch (GitHub workspaces only)
+    const workspace = get().workspaces.find((w) => w.id === workspaceId);
+    if (workspace && !workspace.is_local && workspace.clone_url) {
+      // Fire-and-forget — pull happens async, status updates via events
+      void useSyncStore.getState().triggerPull(workspaceId);
+    }
     // Reload all workspace-scoped stores
     await useCollectionStore.getState().loadWorkspace(workspaceId);
     await useEnvironmentStore.getState().loadEnvironments(workspaceId);

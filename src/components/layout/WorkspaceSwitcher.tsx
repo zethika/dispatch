@@ -4,9 +4,11 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Spinner,
 } from '@heroui/react';
 import { useWorkspaceStore } from '../../stores/workspaceStore';
 import { useAuthStore } from '../../stores/authStore';
+import { useSyncStore } from '../../stores/syncStore';
 
 interface WorkspaceSwitcherProps {
   onConnectRepo: () => void;
@@ -30,9 +32,21 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
+function statusDot(status: string) {
+  if (status === 'syncing') return <Spinner size="sm" classNames={{ wrapper: 'w-3 h-3' }} />;
+  const colorMap: Record<string, string> = {
+    synced: 'bg-primary',
+    conflict: 'bg-warning',
+    error: 'bg-danger',
+  };
+  const bg = colorMap[status] ?? 'bg-default-300';
+  return <div className={`w-1.5 h-1.5 rounded-full ${bg} flex-shrink-0`} />;
+}
+
 export default function WorkspaceSwitcher({ onConnectRepo }: WorkspaceSwitcherProps) {
   const { workspaces, activeWorkspaceId, switchWorkspace } = useWorkspaceStore();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const syncStatuses = useSyncStore((s) => s.syncStatuses);
 
   const activeWorkspace = workspaces.find((w) => w.id === activeWorkspaceId);
   const activeLabel = activeWorkspace?.display_name ?? 'Local';
@@ -41,12 +55,13 @@ export default function WorkspaceSwitcher({ onConnectRepo }: WorkspaceSwitcherPr
     key: w.id,
     label: w.display_name,
     is_local: w.is_local,
+    syncStatus: w.is_local ? 'local' : (syncStatuses[w.id] ?? 'synced'),
   }));
 
   const allItems = [
     ...workspaceItems,
     ...(isLoggedIn
-      ? [{ key: 'connect', label: 'Connect repo...', is_local: false }]
+      ? [{ key: 'connect', label: 'Connect repo...', is_local: false, syncStatus: undefined as string | undefined }]
       : []),
   ];
 
@@ -84,9 +99,7 @@ export default function WorkspaceSwitcher({ onConnectRepo }: WorkspaceSwitcherPr
               key={item.key}
               className={item.key === 'connect' ? 'text-primary' : ''}
               startContent={
-                item.key !== 'connect' ? (
-                  <div className="w-1.5 h-1.5 rounded-full bg-default-300 flex-shrink-0" />
-                ) : undefined
+                item.key !== 'connect' ? statusDot(item.syncStatus ?? 'local') : undefined
               }
             >
               {item.label}

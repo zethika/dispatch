@@ -12,8 +12,10 @@ import { toast } from 'sonner';
 import { useEnvironmentStore } from '../../stores/environmentStore';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { useAuthStore } from '../../stores/authStore';
+import { useSyncStore } from '../../stores/syncStore';
 import EnvironmentModal from '../../features/environments/EnvironmentModal';
 import LoginModal from '../../features/auth/LoginModal';
+import SyncStatusChip from '../../features/sync/SyncStatusChip';
 
 export default function TopBar() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,6 +38,13 @@ export default function TopBar() {
       void useEnvironmentStore.getState().loadEnvironments(workspaceId);
     }
   }, [workspaceId]);
+
+  // Initialize sync event listener on mount
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    useSyncStore.getState().initListener().then((fn) => { unlisten = fn; });
+    return () => { unlisten?.(); };
+  }, []);
 
   // D-11: Show session expiry toast with clickable "Sign in" action
   useEffect(() => {
@@ -153,6 +162,8 @@ export default function TopBar() {
       </Dropdown>
 
       <div className="flex-1" />
+
+      <SyncStatusChip />
 
       {workspaceId && (
         <EnvironmentModal
