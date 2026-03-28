@@ -7,7 +7,7 @@ pub struct GitHubUser {
     pub login: String,
     pub avatar_url: String,
     pub name: Option<String>,
-    pub id: u64,
+    pub id: u32,
 }
 
 /// Owner information embedded in a repo.
@@ -19,7 +19,7 @@ pub struct RepoOwner {
 /// GitHub repository information.
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct RepoInfo {
-    pub id: u64,
+    pub id: u32,
     pub name: String,
     pub full_name: String,
     pub clone_url: String,
@@ -93,7 +93,7 @@ pub async fn list_repos(token: &str) -> Result<Vec<RepoInfo>, String> {
 
     loop {
         let url = format!(
-            "https://api.github.com/user/repos?per_page=100&page={}&affiliation=owner,collaborator,organization_member",
+            "https://api.github.com/user/repos?per_page=100&page={}&affiliation=owner,collaborator,organization_member&visibility=all",
             page
         );
 

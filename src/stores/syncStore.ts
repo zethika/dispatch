@@ -64,7 +64,7 @@ export const useSyncStore = create<SyncState>((set, get) => ({
         const isAuthError = message?.includes('not_authenticated') ?? false;
         const errorMsg = isAuthError
           ? 'Sync failed \u2014 sign in to GitHub and try again'
-          : 'Sync failed \u2014 check your connection and try again';
+          : `Sync failed: ${message ?? 'unknown error'}`;
         toast.error(errorMsg);
       }
     });
@@ -79,9 +79,19 @@ export const useSyncStore = create<SyncState>((set, get) => ({
     }));
     try {
       await syncWorkspace(workspaceId);
+      // IPC resolved — if event listener missed the status update, set synced directly
+      if (get().syncStatuses[workspaceId] === 'syncing') {
+        set((s) => ({
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'synced' },
+        }));
+      }
     } catch (e) {
-      // Event listener handles final error state from backend
       console.error('[syncStore] triggerSync error:', e);
+      if (get().syncStatuses[workspaceId] === 'syncing') {
+        set((s) => ({
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'error' },
+        }));
+      }
     }
   },
 
@@ -92,9 +102,19 @@ export const useSyncStore = create<SyncState>((set, get) => ({
     }));
     try {
       await pullWorkspace(workspaceId);
+      // IPC resolved — if event listener missed the status update, set synced directly
+      if (get().syncStatuses[workspaceId] === 'syncing') {
+        set((s) => ({
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'synced' },
+        }));
+      }
     } catch (e) {
-      // Event listener handles final error state from backend
       console.error('[syncStore] triggerPull error:', e);
+      if (get().syncStatuses[workspaceId] === 'syncing') {
+        set((s) => ({
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'synced' },
+        }));
+      }
     }
   },
 

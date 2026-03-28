@@ -67,7 +67,11 @@ pub fn push_to_remote(local_path: &str, clone_url: &str, token: &str) -> Result<
 
     let token_owned = token.to_string();
     let mut callbacks = git2::RemoteCallbacks::new();
+    let attempts = std::sync::atomic::AtomicUsize::new(0);
     callbacks.credentials(move |_url, _username, _allowed| {
+        if attempts.fetch_add(1, std::sync::atomic::Ordering::SeqCst) > 0 {
+            return Err(git2::Error::from_str("authentication failed"));
+        }
         git2::Cred::userpass_plaintext("oauth2", &token_owned)
     });
 
@@ -96,7 +100,12 @@ pub fn pull(local_path: &str, clone_url: &str, token: &str) -> Result<Vec<String
     // 1. Fetch
     let token_owned = token.to_string();
     let mut callbacks = git2::RemoteCallbacks::new();
+    let attempts = std::sync::atomic::AtomicUsize::new(0);
     callbacks.credentials(move |_url, _username, _allowed| {
+        // Guard against infinite retry loop if credentials are rejected
+        if attempts.fetch_add(1, std::sync::atomic::Ordering::SeqCst) > 0 {
+            return Err(git2::Error::from_str("authentication failed"));
+        }
         git2::Cred::userpass_plaintext("oauth2", &token_owned)
     });
 
@@ -116,13 +125,15 @@ pub fn pull(local_path: &str, clone_url: &str, token: &str) -> Result<Vec<String
         )
         .map_err(|e| e.to_string())?;
 
-    // 2. Find FETCH_HEAD
-    let fetch_head = repo
-        .find_reference("FETCH_HEAD")
-        .map_err(|e| e.to_string())?;
-    let fetch_commit = repo
-        .reference_to_annotated_commit(&fetch_head)
-        .map_err(|e| e.to_string())?;
+    // 2. Find FETCH_HEAD — may not exist if remote is empty or freshly cloned
+    let fetch_head = match repo.find_reference("FETCH_HEAD") {
+        Ok(r) => r,
+        Err(_) => return Ok(vec![]), // Nothing to merge — already up to date
+    };
+    let fetch_commit = match repo.reference_to_annotated_commit(&fetch_head) {
+        Ok(c) => c,
+        Err(_) => return Ok(vec![]), // FETCH_HEAD exists but is invalid — treat as up to date
+    };
 
     // 3. Merge analysis
     let (analysis, _) = repo

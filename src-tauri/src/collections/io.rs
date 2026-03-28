@@ -185,8 +185,29 @@ pub fn get_workspace_ids(app_data_dir: &Path) -> anyhow::Result<Vec<String>> {
 }
 
 /// Read the full workspace tree from disk.
+///
+/// If `dispatch.json` is missing (e.g. freshly cloned empty repo), initializes
+/// it with a default manifest and creates the `collections/` directory.
 pub fn read_workspace(workspace_dir: &Path) -> anyhow::Result<WorkspaceTree> {
-    let manifest: WorkspaceManifest = read_manifest(&workspace_dir.join("dispatch.json"))?;
+    let manifest_path = workspace_dir.join("dispatch.json");
+    let manifest: WorkspaceManifest = if manifest_path.exists() {
+        read_manifest(&manifest_path)?
+    } else {
+        // Initialize empty workspace (e.g. freshly cloned empty GitHub repo)
+        let id = workspace_dir
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_string();
+        let m = WorkspaceManifest {
+            id,
+            name: "Workspace".to_string(),
+            created_at: chrono_now(),
+        };
+        fs::create_dir_all(workspace_dir.join("collections"))?;
+        write_manifest(&manifest_path, &m)?;
+        m
+    };
     let collections_dir = workspace_dir.join("collections");
 
     let mut collections: Vec<CollectionItem> = vec![];

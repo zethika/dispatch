@@ -3,7 +3,7 @@ use specta::Type;
 
 /// Placeholder development client ID — user must register a GitHub OAuth App
 /// and set GITHUB_CLIENT_ID at build time.
-const DEV_CLIENT_ID: &str = "Ov23liXXXXXXXXXXXXXX";
+const DEV_CLIENT_ID: &str = "Ov23liF1NFaPrHwqNO6e";
 
 /// Returns the GitHub OAuth App client ID.
 /// Reads from the GITHUB_CLIENT_ID environment variable at compile time,
@@ -19,7 +19,7 @@ pub struct DeviceCodeResponse {
     pub user_code: String,
     pub verification_uri: String,
     pub expires_in: u32,
-    pub interval: u64,
+    pub interval: u32,
 }
 
 /// Initiate the GitHub device authorization flow.
@@ -68,7 +68,7 @@ enum PollResponse {
 pub async fn poll_for_token(
     client_id: &str,
     device_code: &str,
-    initial_interval: u64,
+    initial_interval: u32,
 ) -> Result<String, String> {
     let client = tauri_plugin_http::reqwest::Client::new();
     let mut interval = initial_interval;
@@ -78,7 +78,7 @@ pub async fn poll_for_token(
         // In practice, poll_for_token is called from an async context via tauri::async_runtime.
         let sleep_secs = interval;
         tauri::async_runtime::spawn_blocking(move || {
-            std::thread::sleep(std::time::Duration::from_secs(sleep_secs));
+            std::thread::sleep(std::time::Duration::from_secs(sleep_secs.into()));
         })
         .await
         .map_err(|e| e.to_string())?;

@@ -88,14 +88,18 @@ const NoSyncIcon = () => (
 );
 
 export default function SyncStatusChip() {
-  const getStatus = useSyncStore((s) => s.getStatus);
+  const syncStatuses = useSyncStore((s) => s.syncStatuses);
   const activeWorkspace = useWorkspaceStore((s) =>
     s.workspaces.find((w) => w.id === s.activeWorkspaceId)
   );
 
   const workspaceId = activeWorkspace?.id ?? null;
   const isLocal = activeWorkspace?.is_local ?? true;
-  const status = workspaceId ? getStatus(workspaceId, isLocal) : 'local';
+  const status = isLocal
+    ? 'local'
+    : workspaceId
+      ? (syncStatuses[workspaceId] ?? 'synced')
+      : 'local';
 
   const handlePress = () => {
     if (workspaceId && status !== 'local') {

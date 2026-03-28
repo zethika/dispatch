@@ -21,7 +21,7 @@ pub async fn initiate_login(
 pub async fn poll_login(
     app: tauri::AppHandle,
     device_code: String,
-    interval: u64,
+    interval: u32,
 ) -> Result<GitHubUser, String> {
     let access_token =
         device_flow::poll_for_token(device_flow::get_client_id(), &device_code, interval).await?;
