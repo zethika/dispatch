@@ -17,6 +17,8 @@ Teams can share and collaborate on API request collections through git — witho
 - [x] Local-only secrets layer (never committed to git) — Validated in Phase 4: Environments & Secrets
 - [x] GitHub OAuth device flow login — Validated in Phase 5: GitHub Auth
 - [x] Connect GitHub repos as workspaces (clone, sync, disconnect) — Validated in Phase 5: GitHub Auth
+- [x] Sync status indicator visible in the UI (synced/syncing/conflict) — Validated in Phase 6: Git Sync Engine
+- [x] File-level last-write-wins conflict resolution with user notification — Validated in Phase 6: Git Sync Engine
 
 ### Active
 
@@ -29,7 +31,7 @@ Teams can share and collaborate on API request collections through git — witho
 - [ ] Auto-sync via git (debounced commit+push, periodic pull, focus pull)
 - [ ] File-based data model (JSON files committed to repo)
 - ~~Local-only secrets layer (never committed to git)~~ → Validated
-- [ ] Conflict resolution (last-write-wins at file level with notification)
+- ~~Conflict resolution (last-write-wins at file level with notification)~~ → Validated
 - [ ] Offline support (queue changes, push when connectivity returns)
 - [ ] cURL import (paste detection + explicit import action)
 - [ ] cURL export (copy as cURL with resolved variables)
@@ -74,7 +76,7 @@ Teams can share and collaborate on API request collections through git — witho
 | File-based JSON data model | Human-readable, git-diffable, version history for free | — Pending |
 | Local-only secrets layer | API keys and tokens must never be committed to git | ✓ Phase 4 — secrets stored as local JSON at app_data_dir/secrets/, stripped before workspace write |
 | Auto-sync with debounce | Users shouldn't think about saving or syncing — it just happens | — Pending |
-| Last-write-wins conflicts | Simple, predictable — notify user rather than force manual merge | — Pending |
+| Last-write-wins conflicts | Simple, predictable — notify user rather than force manual merge | ✓ Phase 6 — remote wins on pull, conflict toast with file paths |
 | HeroUI component library | Polished components out of the box, built on Tailwind | — Pending |
 | No first-launch auth gate | Users should be able to send a request immediately without GitHub login | ✓ Phase 5 — Local workspace always available, GitHub login optional |
 
@@ -96,4 +98,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-25 after Phase 5 (GitHub Auth) complete — OAuth device flow login, repo browser with clone, workspace switcher, token expiry handling, local-only mode preserved*
+*Last updated: 2026-03-28 after Phase 6 (Git Sync Engine) complete — thread-safe git actor, manual sync via TopBar chip, pull-on-switch, remote-wins conflict resolution with toast notification, sync status indicators*
