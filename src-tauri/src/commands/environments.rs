@@ -33,30 +33,46 @@ pub fn load_environment(
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_environment(
+pub async fn save_environment(
     workspace_id: String,
     env_slug: String,
     env: EnvironmentFile,
     app: tauri::AppHandle,
 ) -> Result<(), String> {
     let ws_dir = workspace_dir(&app, &workspace_id)?;
-    io::save_environment(&ws_dir, &env_slug, &env).map_err(|e| e.to_string())
+    io::save_environment(&ws_dir, &env_slug, &env).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_environment(
+pub async fn create_environment(
     workspace_id: String,
     name: String,
     app: tauri::AppHandle,
 ) -> Result<EnvironmentSummary, String> {
     let ws_dir = workspace_dir(&app, &workspace_id)?;
-    io::create_environment(&ws_dir, &name).map_err(|e| e.to_string())
+    let result = io::create_environment(&ws_dir, &name).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_environment(
+pub async fn delete_environment(
     workspace_id: String,
     env_slug: String,
     app: tauri::AppHandle,
@@ -64,12 +80,20 @@ pub fn delete_environment(
     let app_data = app.path().app_data_dir().map_err(|e| e.to_string())?;
     let ws_dir = workspace_dir(&app, &workspace_id)?;
     io::delete_environment(&ws_dir, &app_data, &workspace_id, &env_slug)
-        .map_err(|e| e.to_string())
+        .map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn rename_environment(
+pub async fn rename_environment(
     workspace_id: String,
     old_slug: String,
     new_name: String,
@@ -77,8 +101,16 @@ pub fn rename_environment(
 ) -> Result<EnvironmentSummary, String> {
     let app_data = app.path().app_data_dir().map_err(|e| e.to_string())?;
     let ws_dir = workspace_dir(&app, &workspace_id)?;
-    io::rename_environment(&ws_dir, &app_data, &workspace_id, &old_slug, &new_name)
-        .map_err(|e| e.to_string())
+    let result = io::rename_environment(&ws_dir, &app_data, &workspace_id, &old_slug, &new_name)
+        .map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]

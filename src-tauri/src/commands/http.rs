@@ -43,7 +43,7 @@ pub fn load_request(
 
 #[tauri::command]
 #[specta::specta]
-pub fn save_request(
+pub async fn save_request(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -64,5 +64,13 @@ pub fn save_request(
     let file_path = dir.join(format!("{}.json", slug));
     let content = serde_json::to_string_pretty(&request).map_err(|e| e.to_string())?;
     std::fs::write(&file_path, content).map_err(|e| e.to_string())?;
+
+    // Fire-and-forget debounced sync notification.
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
     Ok(())
 }

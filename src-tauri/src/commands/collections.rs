@@ -50,18 +50,26 @@ pub fn load_workspace(workspace_id: String, app: tauri::AppHandle) -> Result<Wor
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_collection(
+pub async fn create_collection(
     workspace_id: String,
     name: String,
     app: tauri::AppHandle,
 ) -> Result<CollectionItem, String> {
     let ws_dir = workspace_dir(&app, &workspace_id)?;
-    io::create_collection(&ws_dir, &name).map_err(|e| e.to_string())
+    let result = io::create_collection(&ws_dir, &name).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_folder(
+pub async fn create_folder(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -69,12 +77,20 @@ pub fn create_folder(
     app: tauri::AppHandle,
 ) -> Result<FolderItem, String> {
     let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
-    io::create_folder(&parent_dir, &name).map_err(|e| e.to_string())
+    let result = io::create_folder(&parent_dir, &name).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn create_request(
+pub async fn create_request(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -82,12 +98,20 @@ pub fn create_request(
     app: tauri::AppHandle,
 ) -> Result<RequestItem, String> {
     let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
-    io::create_request(&parent_dir, &name).map_err(|e| e.to_string())
+    let result = io::create_request(&parent_dir, &name).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn rename_node(
+pub async fn rename_node(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -97,12 +121,20 @@ pub fn rename_node(
     app: tauri::AppHandle,
 ) -> Result<String, String> {
     let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
-    io::rename_node(&parent_dir, &old_slug, &new_name, is_dir).map_err(|e| e.to_string())
+    let result = io::rename_node(&parent_dir, &old_slug, &new_name, is_dir).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_node(
+pub async fn delete_node(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -111,24 +143,40 @@ pub fn delete_node(
     app: tauri::AppHandle,
 ) -> Result<(), String> {
     let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
-    io::delete_node(&parent_dir, &slug, is_dir).map_err(|e| e.to_string())
+    io::delete_node(&parent_dir, &slug, is_dir).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn delete_collection(
+pub async fn delete_collection(
     workspace_id: String,
     collection_slug: String,
     app: tauri::AppHandle,
 ) -> Result<(), String> {
     let ws_dir = workspace_dir(&app, &workspace_id)?;
     let collections_dir = ws_dir.join("collections");
-    io::delete_node(&collections_dir, &collection_slug, true).map_err(|e| e.to_string())
+    io::delete_node(&collections_dir, &collection_slug, true).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn rename_collection(
+pub async fn rename_collection(
     workspace_id: String,
     old_slug: String,
     new_name: String,
@@ -136,12 +184,20 @@ pub fn rename_collection(
 ) -> Result<String, String> {
     let ws_dir = workspace_dir(&app, &workspace_id)?;
     let collections_dir = ws_dir.join("collections");
-    io::rename_node(&collections_dir, &old_slug, &new_name, true).map_err(|e| e.to_string())
+    let result = io::rename_node(&collections_dir, &old_slug, &new_name, true).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub fn duplicate_request(
+pub async fn duplicate_request(
     workspace_id: String,
     collection_slug: String,
     parent_path: Vec<String>,
@@ -149,5 +205,13 @@ pub fn duplicate_request(
     app: tauri::AppHandle,
 ) -> Result<RequestItem, String> {
     let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
-    io::duplicate_request(&parent_dir, &slug).map_err(|e| e.to_string())
+    let result = io::duplicate_request(&parent_dir, &slug).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(result)
 }

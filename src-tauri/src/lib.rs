@@ -66,6 +66,31 @@ pub fn run() {
             builder.mount_events(app);
             // Initialize the singleton git sync actor (D-01/D-02)
             app.manage(sync::ActorHandle::new(app.handle().clone()));
+            // Spawn periodic 30-second pull timer for all GitHub-backed workspaces (SYNC-02).
+            {
+                let periodic_actor = app.state::<sync::ActorHandle>().inner().clone();
+                let periodic_app = app.handle().clone();
+                tauri::async_runtime::spawn(async move {
+                    use tokio::time::{interval, Duration};
+                    let mut ticker = interval(Duration::from_secs(30));
+                    ticker.tick().await; // consume immediate first tick so pull doesn't fire on startup
+                    loop {
+                        ticker.tick().await;
+                        let Ok(entries) = workspace::registry::load_registry(&periodic_app) else { continue; };
+                        for entry in entries.iter().filter(|e| !e.is_local && e.clone_url.is_some()) {
+                            let Ok(Some(token)) = auth::token::load_token(&periodic_app) else { continue; };
+                            let _ = periodic_actor
+                                .pull(
+                                    entry.id.clone(),
+                                    entry.local_path.clone(),
+                                    entry.clone_url.clone().unwrap(),
+                                    token,
+                                )
+                                .await;
+                        }
+                    }
+                });
+            }
             // First-launch: ensure default workspace exists (D-08)
             let app_data = app.path().app_data_dir().expect("Failed to get app data dir");
             collections::io::ensure_default_workspace(&app_data)
