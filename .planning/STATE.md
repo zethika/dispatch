@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-03-29T15:12:58.720Z"
+status: Phase complete — ready for verification
+stopped_at: "Completed 07-02-PLAN.md (at checkpoint:human-verify Task 3)"
+last_updated: "2026-03-29T15:20:28.055Z"
 progress:
   total_phases: 8
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 17
-  completed_plans: 16
+  completed_plans: 17
 ---
 
 # Project State
@@ -63,6 +63,7 @@ Plan: 2 of 2
 | Phase 06-git-sync-engine P01 | 4 | 2 tasks | 8 files |
 | Phase 06-git-sync-engine P02 | 8 | 2 tasks | 6 files |
 | Phase 07 P01 | 5 | 3 tasks | 10 files |
+| Phase 07 P02 | 5 | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 07]: ActorHandle accepts app_handle in new() for internal event emission
 - [Phase 07]: notify_change_inner uses best-effort pattern: failures silently ignored to never block saves
 - [Phase 07]: Periodic pull timer consumes first tick to avoid startup pull
+- [Phase 07]: onFocusChanged uses .then() not async/await in useEffect — consistent with initListener pattern in TopBar
+- [Phase 07]: Wave 0 stubs replaced with logic-level assertions — no React render mocking needed for label/icon mapping tests
+- [Phase 07]: App.test.tsx extended with window and syncStore mocks to support App.tsx new imports from getCurrentWindow
 
 ### Pending Todos
 
@@ -134,6 +138,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T15:12:58.717Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-03-29T15:20:28.053Z
+Stopped at: Completed 07-02-PLAN.md (at checkpoint:human-verify Task 3)
 Resume file: None

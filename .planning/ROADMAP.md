@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Environments & Secrets** - Environment variables with secret storage and variable substitution (completed 2026-03-25)
 - [x] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect (completed 2026-03-25)
 - [x] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification (completed 2026-03-26)
-- [ ] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator
+- [x] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator (completed 2026-03-29)
 - [ ] **Phase 8: Polish & Power Features** - cURL import/export, Cmd+K search, drag-and-drop, keyboard shortcuts
 
 ## Phase Details
@@ -130,7 +130,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 07-01-PLAN.md — Rust actor debounce, notify_change hooks, periodic pull timer, offline queue
-- [ ] 07-02-PLAN.md — Frontend offline state, transition toasts, focus-pull listener, visual verification
+- [x] 07-02-PLAN.md — Frontend offline state, transition toasts, focus-pull listener, visual verification
 
 ### Phase 8: Polish & Power Features
 **Goal**: The app is fast to navigate and fully keyboard-driven, with cURL import/export and fuzzy search completing the power-user workflow
@@ -161,5 +161,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 4. Environments & Secrets | 3/3 | Complete   | 2026-03-25 |
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
 | 6. Git Sync Engine | 2/2 | Complete   | 2026-03-26 |
-| 7. Background Sync Loop | 1/2 | In Progress|  |
+| 7. Background Sync Loop | 2/2 | Complete   | 2026-03-29 |
 | 8. Polish & Power Features | 0/? | Not started | - |
