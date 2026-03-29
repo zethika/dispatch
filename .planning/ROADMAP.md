@@ -129,8 +129,8 @@ Plans:
   4. The sync status indicator correctly shows syncing, synced, offline, and conflict states throughout the cycle
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [ ] 07-01-PLAN.md — Rust actor debounce, notify_change hooks, periodic pull timer, offline queue
+- [ ] 07-02-PLAN.md — Frontend offline state, transition toasts, focus-pull listener, visual verification
 
 ### Phase 8: Polish & Power Features
 **Goal**: The app is fast to navigate and fully keyboard-driven, with cURL import/export and fuzzy search completing the power-user workflow
