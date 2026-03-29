@@ -236,6 +236,65 @@ pub async fn pull_workspace(
     Ok(())
 }
 
+/// Internal best-effort helper called by all mutating save commands.
+///
+/// Failures are silently ignored — sync failure must never fail a save operation.
+pub(crate) async fn notify_change_inner(app: &tauri::AppHandle, workspace_id: String) {
+    use tauri::Manager;
+    let Ok(entries) = registry::load_registry(app) else {
+        return;
+    };
+    let Some(entry) = entries.iter().find(|e| e.id == workspace_id).cloned() else {
+        return;
+    };
+    if entry.is_local {
+        return;
+    }
+    let Some(clone_url) = entry.clone_url else {
+        return;
+    };
+    let Ok(Some(tok)) = token::load_token(app) else {
+        return;
+    };
+    let actor = app.state::<ActorHandle>();
+    let _ = actor
+        .notify_change(workspace_id, entry.local_path, clone_url, tok)
+        .await;
+}
+
+/// Fire-and-forget notification that workspace content has changed.
+///
+/// Called after any mutating save operation (save_request, create_collection, etc.).
+/// The actor debounces these into a single commit+push after 3s of inactivity.
+/// Local workspaces and unauthenticated sessions are silently skipped.
+#[tauri::command]
+#[specta::specta]
+pub async fn notify_change(
+    app: tauri::AppHandle,
+    workspace_id: String,
+) -> Result<(), String> {
+    use tauri::Manager;
+    let entries = registry::load_registry(&app)?;
+    let entry = entries
+        .iter()
+        .find(|e| e.id == workspace_id)
+        .ok_or_else(|| "workspace not found".to_string())?
+        .clone();
+
+    if entry.is_local {
+        return Ok(());
+    }
+
+    let clone_url = entry.clone_url.ok_or("no clone url")?;
+    let token = token::load_token(&app)?
+        .ok_or_else(|| "not_authenticated".to_string())?;
+
+    let actor = app.state::<ActorHandle>();
+    actor
+        .notify_change(workspace_id, entry.local_path, clone_url, token)
+        .await
+}
+
 /// Return the current sync status for a workspace.
 ///
 /// Returns "local" for local-only workspaces, "synced" as the initial

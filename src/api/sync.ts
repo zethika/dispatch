@@ -11,3 +11,7 @@ export async function pullWorkspace(workspaceId: string): Promise<void> {
 export async function getSyncStatus(workspaceId: string): Promise<string> {
   return invoke<string>('get_sync_status', { workspaceId });
 }
+
+export async function notifyChange(workspaceId: string): Promise<void> {
+  return invoke<void>('notify_change', { workspaceId });
+}

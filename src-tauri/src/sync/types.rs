@@ -11,6 +11,7 @@ pub enum SyncStatus {
     Conflict,
     Error,
     Local,
+    Offline,
 }
 
 /// Messages sent to the git actor via mpsc channel.
@@ -29,6 +30,14 @@ pub enum SyncMessage {
         token: String,
         reply: oneshot::Sender<Result<SyncResult, String>>,
     },
+    /// Fire-and-forget notification that workspace content has changed.
+    /// The actor will debounce these and fire a commit+push after 3s of inactivity.
+    NotifyChange {
+        workspace_id: String,
+        local_path: String,
+        clone_url: String,
+        token: String,
+    },
 }
 
 /// Result returned from actor operations.
@@ -44,11 +53,12 @@ pub enum SyncResult {
 }
 
 /// Payload for the `sync-status-changed` Tauri event.
+///
+/// Status values: "synced" | "syncing" | "conflict" | "error" | "local" | "offline"
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SyncStatusPayload {
     pub workspace_id: String,
-    /// "synced" | "syncing" | "conflict" | "error" | "local"
     pub status: String,
     pub message: Option<String>,
     pub conflicted_files: Vec<String>,
