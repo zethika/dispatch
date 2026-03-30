@@ -90,4 +90,5 @@ pub struct RequestItem {
     pub slug: String,
     pub name: String,
     pub method: String,
+    pub url: String,
 }

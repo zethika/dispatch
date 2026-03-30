@@ -12,7 +12,7 @@ export interface CollectionItem {
 
 export type TreeChild =
   | { type: 'folder'; slug: string; name: string; children: TreeChild[] }
-  | { type: 'request'; slug: string; name: string; method: string };
+  | { type: 'request'; slug: string; name: string; method: string; url: string };
 
 export interface FolderItem {
   slug: string;
@@ -24,6 +24,7 @@ export interface RequestItem {
   slug: string;
   name: string;
   method: string;
+  url: string;
 }
 
 export interface RequestFile {
