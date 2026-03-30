@@ -112,6 +112,30 @@ const NoSyncIcon = () => (
   </svg>
 );
 
+const CloudOffIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-default-400"
+  >
+    <path
+      d="M2 2L14 14"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M10.6 5.4A4 4 0 0 0 4.1 8.1C2.4 8.4 1 9.7 1 11.3 1 13 2.5 14 4 14h7.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
 export default function SyncStatusChip() {
   const syncStatuses = useSyncStore((s) => s.syncStatuses);
   const activeWorkspace = useWorkspaceStore((s) =>

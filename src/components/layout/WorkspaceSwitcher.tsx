@@ -38,6 +38,7 @@ function statusDot(status: string) {
     synced: 'bg-primary',
     conflict: 'bg-warning',
     error: 'bg-danger',
+    offline: 'bg-default-400',
   };
   const bg = colorMap[status] ?? 'bg-default-300';
   return <div className={`w-1.5 h-1.5 rounded-full ${bg} flex-shrink-0`} />;

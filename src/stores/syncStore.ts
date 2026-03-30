@@ -25,8 +25,21 @@ export const useSyncStore = create<SyncState>((set, get) => ({
   syncStatuses: {},
 
   initListener: async () => {
+    const previousStatuses: Record<string, SyncStatus> = {};
+
     const unlisten = await listen<SyncStatusPayload>('sync-status-changed', (event) => {
       const { workspaceId, status, message, conflictedFiles } = event.payload;
+
+      const prevStatus = previousStatuses[workspaceId];
+      previousStatuses[workspaceId] = status;
+
+      // D-11: Offline/online transition toasts (neutral tone -- not error)
+      if (status === 'offline' && prevStatus !== 'offline') {
+        toast("You're offline \u2014 changes will sync when reconnected");
+      }
+      if (status !== 'offline' && prevStatus === 'offline' && status === 'syncing') {
+        toast("Back online \u2014 syncing...");
+      }
 
       set((s) => ({
         syncStatuses: { ...s.syncStatuses, [workspaceId]: status },
