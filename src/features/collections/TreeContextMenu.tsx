@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { useCollectionStore } from '../../stores/collectionStore';
+import { useRequestStore } from '../../stores/requestStore';
+import { useEnvironmentStore } from '../../stores/environmentStore';
+import { buildCurlString } from '../../utils/curl';
+import CurlImportModal from '../http/CurlImportModal';
 import { DeleteModal } from './DeleteModal';
 
 interface TreeContextMenuProps {
@@ -42,6 +47,7 @@ export function TreeContextMenu({
 
   const isOpen = contextMenuNodeId === nodeId && contextMenuPosition !== null;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCurlImportModal, setShowCurlImportModal] = useState(false);
 
   // Close context menu on any click or blur
   useEffect(() => {
@@ -73,6 +79,25 @@ export function TreeContextMenu({
       case 'delete':
         setShowDeleteModal(true);
         break;
+      case 'import-curl':
+        setShowCurlImportModal(true);
+        break;
+      case 'copy-as-curl': {
+        const store = useRequestStore.getState();
+        const vars = useEnvironmentStore.getState().activeEnvVariables;
+        const curlStr = buildCurlString(
+          store.method,
+          store.url,
+          store.headers,
+          store.body,
+          store.auth,
+          vars,
+        );
+        void navigator.clipboard.writeText(curlStr).then(() => {
+          toast.success('Copied as cURL');
+        });
+        break;
+      }
     }
   };
 
@@ -127,6 +152,20 @@ export function TreeContextMenu({
               Duplicate
             </button>
           )}
+          <div className="my-1 border-t border-divider" />
+          <button
+            className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+            onClick={() => handleAction('import-curl')}
+          >
+            Import cURL
+          </button>
+          <button
+            className="w-full text-left px-3 py-1.5 text-sm hover:bg-default-100 cursor-pointer"
+            onClick={() => handleAction('copy-as-curl')}
+          >
+            Copy as cURL
+          </button>
+          <div className="my-1 border-t border-divider" />
           <button
             className="w-full text-left px-3 py-1.5 text-sm text-danger hover:bg-default-100 cursor-pointer"
             onClick={() => handleAction('delete')}
@@ -135,6 +174,11 @@ export function TreeContextMenu({
           </button>
         </div>
       )}
+
+      <CurlImportModal
+        isOpen={showCurlImportModal}
+        onClose={() => setShowCurlImportModal(false)}
+      />
 
       <DeleteModal
         isOpen={showDeleteModal}

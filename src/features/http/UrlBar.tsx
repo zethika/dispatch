@@ -7,9 +7,12 @@ import {
   DropdownTrigger,
   Input,
 } from '@heroui/react';
+import { toast } from 'sonner';
 import { tokenize, countUnresolved } from '../../utils/variables';
 import { useEnvironmentStore } from '../../stores/environmentStore';
 import { useRequestStore } from '../../stores/requestStore';
+import { parseCurl } from '../../utils/curl';
+import { applyParsedCurl } from './CurlImportModal';
 
 const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE'] as const;
 
@@ -35,6 +38,21 @@ export default function UrlBar() {
 
   const handleSend = () => {
     useRequestStore.getState().sendRequest();
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const text = e.clipboardData.getData('text');
+    if (text.trimStart().startsWith('curl ')) {
+      e.preventDefault();
+      const parsed = parseCurl(text);
+      if (parsed) {
+        applyParsedCurl(parsed);
+        toast.success('cURL imported');
+      } else {
+        toast.warning('Could not parse cURL command');
+      }
+    }
+    // If not a curl command, default paste behavior applies (text goes in URL field)
   };
 
   // Compute unresolved variable count across all request fields (D-13, ENV-06)
@@ -114,6 +132,7 @@ export default function UrlBar() {
           placeholder="Enter request URL..."
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          onPaste={handlePaste}
           classNames={{
             input: 'text-transparent caret-foreground',
           }}
