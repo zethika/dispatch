@@ -69,9 +69,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Search & Navigation
 
-- [ ] **NAV-01**: User can open search with Cmd+K and search across request names, URLs, collection names
-- [ ] **NAV-02**: Search uses fuzzy matching with ranked results
-- [ ] **NAV-03**: Selecting a search result navigates directly to that request
+- [x] **NAV-01**: User can open search with Cmd+K and search across request names, URLs, collection names
+- [x] **NAV-02**: Search uses fuzzy matching with ranked results
+- [x] **NAV-03**: Selecting a search result navigates directly to that request
 
 ### Keyboard Shortcuts
 
@@ -180,9 +180,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CURL-02 | Phase 8 | Complete |
 | CURL-03 | Phase 8 | Complete |
 | CURL-04 | Phase 8 | Complete |
-| NAV-01 | Phase 8 | Pending |
-| NAV-02 | Phase 8 | Pending |
-| NAV-03 | Phase 8 | Pending |
+| NAV-01 | Phase 8 | Complete |
+| NAV-02 | Phase 8 | Complete |
+| NAV-03 | Phase 8 | Complete |
 | KEY-01 | Phase 8 | Pending |
 | KEY-02 | Phase 8 | Pending |
 | KEY-03 | Phase 8 | Pending |

@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: GitHub Auth** - OAuth device flow login, repo listing, workspace connect/disconnect (completed 2026-03-25)
 - [x] **Phase 6: Git Sync Engine** - Synchronous clone/commit/push/pull via git actor, conflict notification (completed 2026-03-26)
 - [x] **Phase 7: Background Sync Loop** - Invisible auto-sync, offline queue, sync status indicator (completed 2026-03-29)
-- [ ] **Phase 8: Polish & Power Features** - cURL import/export, Cmd+K search, drag-and-drop, keyboard shortcuts
+- [x] **Phase 8: Polish & Power Features** - cURL import/export, Cmd+K search, drag-and-drop, keyboard shortcuts (completed 2026-03-30)
 
 ## Phase Details
 
@@ -146,8 +146,8 @@ Plans:
 Plans:
 - [x] 08-01-PLAN.md — Drag-and-drop reordering and cross-collection moves (Rust commands + dnd-kit UI)
 - [x] 08-02-PLAN.md — cURL import/export (parseCurl, buildCurlString, paste detection, context menu)
-- [ ] 08-03-PLAN.md — Cmd+K fuzzy search (Fuse.js, grouped results, keyboard navigation)
-- [ ] 08-04-PLAN.md — Global keyboard shortcuts and cheatsheet modal
+- [x] 08-03-PLAN.md — Cmd+K fuzzy search (Fuse.js, grouped results, keyboard navigation)
+- [x] 08-04-PLAN.md — Global keyboard shortcuts and cheatsheet modal
 **UI hint**: yes
 
 ## Progress
@@ -164,4 +164,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
 | 6. Git Sync Engine | 2/2 | Complete   | 2026-03-26 |
 | 7. Background Sync Loop | 2/2 | Complete   | 2026-03-29 |
-| 8. Polish & Power Features | 2/4 | In Progress|  |
+| 8. Polish & Power Features | 4/4 | Complete   | 2026-03-30 |

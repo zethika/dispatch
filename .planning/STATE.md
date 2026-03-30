@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-03-30T06:28:55.022Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 08-04-PLAN.md
+last_updated: "2026-03-30T06:35:58.405Z"
 progress:
   total_phases: 8
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 21
-  completed_plans: 19
+  completed_plans: 21
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-03-23)
 ## Current Position
 
 Phase: 08 (polish-power-features) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 
 ## Performance Metrics
 
@@ -66,6 +66,8 @@ Plan: 3 of 4
 | Phase 07 P02 | 5 | 3 tasks | 7 files |
 | Phase 08 P02 | 3 | 2 tasks | 6 files |
 | Phase 08 P01 | 6 | 2 tasks | 11 files |
+| Phase 08 P03 | 10 | 2 tasks | 9 files |
+| Phase 08 P04 | 3 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -132,6 +134,10 @@ Recent decisions affecting current work:
 - [Phase 08]: u32 for index params in reorder_node/move_node Tauri commands — specta does not support usize across IPC bridge
 - [Phase 08]: SortableContext placed per-collection (not globally) — keeps drag isolation between collections
 - [Phase 08]: decodeNodeId splits nodeId on slash: first=collectionSlug, last=slug, middle=parentPath — reuses existing store convention
+- [Phase 08]: buildSearchIndex and groupByCollection exported as pure functions for testability without React rendering
+- [Phase 08]: Fuse.js index rebuilt on modal open to prevent stale results after renames
+- [Phase 08]: searchOpen/cheatsheetOpen in uiStore so any component can trigger search modal
+- [Phase 08]: syncStore has triggerSync(workspaceId) not triggerPush — Cmd+S uses triggerSync with workspaceId from collectionStore
 
 ### Pending Todos
 
@@ -145,6 +151,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T06:28:55.019Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-03-30T06:35:58.403Z
+Stopped at: Completed 08-04-PLAN.md
 Resume file: None
