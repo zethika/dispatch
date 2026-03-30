@@ -13,14 +13,17 @@ import { useEnvironmentStore } from '../../stores/environmentStore';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { useAuthStore } from '../../stores/authStore';
 import { useSyncStore } from '../../stores/syncStore';
+import { useUiStore } from '../../stores/uiStore';
 import EnvironmentModal from '../../features/environments/EnvironmentModal';
 import LoginModal from '../../features/auth/LoginModal';
 import SyncStatusChip from '../../features/sync/SyncStatusChip';
+import SearchModal from '../../features/search/SearchModal';
 
 export default function TopBar() {
   const [modalOpen, setModalOpen] = useState(false);
   const { environments, activeEnvSlug, setActiveEnvironment } = useEnvironmentStore();
   const workspaceId = useCollectionStore((s) => s.workspaceId);
+  const { setSearchOpen } = useUiStore();
   const {
     user,
     isLoggedIn,
@@ -58,6 +61,18 @@ export default function TopBar() {
       clearSessionExpiredPending();
     }
   }, [sessionExpiredPending, clearSessionExpiredPending]);
+
+  // Cmd+K opens search modal
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [setSearchOpen]);
 
   const activeEnvName =
     activeEnvSlug
@@ -161,6 +176,30 @@ export default function TopBar() {
         </DropdownMenu>
       </Dropdown>
 
+      <button
+        data-shortcut-id="search-icon"
+        onClick={() => setSearchOpen(true)}
+        className="flex items-center gap-1.5 px-2 py-1 text-xs text-default-400 bg-default-100 hover:bg-default-200 rounded-md transition-colors select-none"
+        title="Search (Cmd+K)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <span>Search</span>
+        <kbd className="text-default-300 text-xs">⌘K</kbd>
+      </button>
+
       <div className="flex-1" />
 
       <SyncStatusChip />
@@ -174,6 +213,8 @@ export default function TopBar() {
       )}
 
       <LoginModal isOpen={loginModalOpen} onClose={closeLoginModal} />
+
+      <SearchModal />
     </div>
   );
 }

@@ -282,6 +282,7 @@ fn read_children(dir: &Path, order: &[String]) -> anyhow::Result<Vec<TreeChild>>
                 slug: slug.clone(),
                 name: request.name,
                 method: request.method,
+                url: request.url,
             }));
         }
         // else: silently drop (file/dir doesn't exist)
@@ -424,6 +425,7 @@ pub fn create_request(parent_dir: &Path, name: &str) -> anyhow::Result<RequestIt
         slug,
         name: resolved_name,
         method: "GET".to_string(),
+        url: String::new(),
     })
 }
 
@@ -588,6 +590,7 @@ pub fn duplicate_request(parent_dir: &Path, slug: &str) -> anyhow::Result<Reques
         slug: new_slug,
         name: copy_name,
         method: request.method,
+        url: request.url,
     })
 }
 
