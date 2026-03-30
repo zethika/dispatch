@@ -145,7 +145,7 @@ Plans:
 **Plans**: 4 plans
 Plans:
 - [ ] 08-01-PLAN.md — Drag-and-drop reordering and cross-collection moves (Rust commands + dnd-kit UI)
-- [ ] 08-02-PLAN.md — cURL import/export (parseCurl, buildCurlString, paste detection, context menu)
+- [x] 08-02-PLAN.md — cURL import/export (parseCurl, buildCurlString, paste detection, context menu)
 - [ ] 08-03-PLAN.md — Cmd+K fuzzy search (Fuse.js, grouped results, keyboard navigation)
 - [ ] 08-04-PLAN.md — Global keyboard shortcuts and cheatsheet modal
 **UI hint**: yes
@@ -164,4 +164,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
 | 6. Git Sync Engine | 2/2 | Complete   | 2026-03-26 |
 | 7. Background Sync Loop | 2/2 | Complete   | 2026-03-29 |
-| 8. Polish & Power Features | 0/4 | Not started | - |
+| 8. Polish & Power Features | 1/4 | In Progress|  |

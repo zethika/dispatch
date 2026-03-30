@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Phase 8 UI-SPEC approved
-last_updated: "2026-03-30T05:35:17.762Z"
+status: Ready to execute
+stopped_at: Completed 08-02-PLAN.md
+last_updated: "2026-03-30T06:25:52.523Z"
 progress:
   total_phases: 8
   completed_phases: 7
-  total_plans: 17
-  completed_plans: 17
+  total_plans: 21
+  completed_plans: 18
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-23)
 
 **Core value:** Teams can share and collaborate on API request collections through git — without anyone needing to know git is involved.
-**Current focus:** Phase 07 — background-sync-loop
+**Current focus:** Phase 08 — polish-power-features
 
 ## Current Position
 
-Phase: 8
-Plan: Not started
+Phase: 08 (polish-power-features) — EXECUTING
+Plan: 2 of 4
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Plan: Not started
 | Phase 06-git-sync-engine P02 | 8 | 2 tasks | 6 files |
 | Phase 07 P01 | 5 | 3 tasks | 10 files |
 | Phase 07 P02 | 5 | 3 tasks | 7 files |
+| Phase 08 P02 | 3 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -125,6 +126,8 @@ Recent decisions affecting current work:
 - [Phase 07]: onFocusChanged uses .then() not async/await in useEffect — consistent with initListener pattern in TopBar
 - [Phase 07]: Wave 0 stubs replaced with logic-level assertions — no React render mocking needed for label/icon mapping tests
 - [Phase 07]: App.test.tsx extended with window and syncStore mocks to support App.tsx new imports from getCurrentWindow
+- [Phase 08]: applyParsedCurl exported from CurlImportModal to avoid duplication with UrlBar paste handler
+- [Phase 08]: curlconverter@4.12.0 pinned — ESM-only, handled natively by Vite; Bearer Authorization extracted to auth field during import
 
 ### Pending Todos
 
@@ -138,6 +141,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T05:35:17.759Z
-Stopped at: Phase 8 UI-SPEC approved
-Resume file: .planning/phases/08-polish-power-features/08-UI-SPEC.md
+Last session: 2026-03-30T06:25:52.520Z
+Stopped at: Completed 08-02-PLAN.md
+Resume file: None
