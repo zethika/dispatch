@@ -3,6 +3,19 @@
 /// IMPORTANT: All functions in this module are synchronous and MUST be called
 /// from `tauri::async_runtime::spawn_blocking` — never from an async context directly.
 
+/// Ensure the repo config overrides any global `url.<ssh>.insteadOf` rules
+/// that would rewrite HTTPS URLs to SSH. Dispatch always authenticates via
+/// HTTPS + OAuth token — SSH rewrites break the credentials callback.
+fn force_https_remote(repo: &git2::Repository, clone_url: &str) -> Result<(), String> {
+    let mut config = repo.config().map_err(|e| e.to_string())?;
+    config
+        .set_str(
+            &format!("url.{clone_url}.insteadOf", clone_url = clone_url),
+            clone_url,
+        )
+        .map_err(|e| e.to_string())
+}
+
 /// Stage all changes and create a "Dispatch sync" commit.
 ///
 /// Returns `Ok(true)` if a commit was created, `Ok(false)` if the working tree
@@ -59,6 +72,7 @@ pub fn commit_all(local_path: &str) -> Result<bool, String> {
 /// The credential callback uses the same pattern as `clone_ops.rs`.
 pub fn push_to_remote(local_path: &str, clone_url: &str, token: &str) -> Result<(), String> {
     let repo = git2::Repository::open(local_path).map_err(|e| e.to_string())?;
+    force_https_remote(&repo, clone_url)?;
 
     let mut remote = repo
         .find_remote("origin")
@@ -96,6 +110,7 @@ pub fn push_to_remote(local_path: &str, clone_url: &str, token: &str) -> Result<
 /// An empty vec means a clean merge or fast-forward.
 pub fn pull(local_path: &str, clone_url: &str, token: &str) -> Result<Vec<String>, String> {
     let repo = git2::Repository::open(local_path).map_err(|e| e.to_string())?;
+    force_https_remote(&repo, clone_url)?;
 
     // 1. Fetch
     let token_owned = token.to_string();

@@ -32,11 +32,17 @@ pub async fn connect_workspace(
     // Clone runs synchronously in git2 — must use spawn_blocking
     let clone_url_clone = clone_url.clone();
     let local_path_clone = local_path.clone();
-    tauri::async_runtime::spawn_blocking(move || {
+    eprintln!("[connect_workspace] cloning {} → {:?}", clone_url_clone, local_path_clone);
+    let clone_result = tauri::async_runtime::spawn_blocking(move || {
         clone_ops::clone_repo(&clone_url_clone, &local_path_clone, &access_token)
     })
     .await
-    .map_err(|e| e.to_string())??;
+    .map_err(|e| e.to_string())?;
+
+    if let Err(ref e) = clone_result {
+        eprintln!("[connect_workspace] clone failed: {e}");
+    }
+    clone_result?;
 
     let entry = WorkspaceEntry {
         id,
