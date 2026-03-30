@@ -75,14 +75,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Keyboard Shortcuts
 
-- [ ] **KEY-01**: Cmd+Enter sends the current request
-- [ ] **KEY-02**: Cmd+N creates a new request
-- [ ] **KEY-03**: Cmd+Shift+N creates a new collection
-- [ ] **KEY-04**: Cmd+K opens search
-- [ ] **KEY-05**: Cmd+E switches environment
-- [ ] **KEY-06**: Cmd+Shift+C copies current request as cURL
-- [ ] **KEY-07**: Cmd+W closes the current tab
-- [ ] **KEY-08**: Cmd+S forces a sync
+- [x] **KEY-01**: Cmd+Enter sends the current request
+- [x] **KEY-02**: Cmd+N creates a new request
+- [x] **KEY-03**: Cmd+Shift+N creates a new collection
+- [x] **KEY-04**: Cmd+K opens search
+- [x] **KEY-05**: Cmd+E switches environment
+- [x] **KEY-06**: Cmd+Shift+C copies current request as cURL
+- [x] **KEY-07**: Cmd+W closes the current tab
+- [x] **KEY-08**: Cmd+S forces a sync
 
 ### App Shell
 
@@ -183,14 +183,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | NAV-01 | Phase 8 | Complete |
 | NAV-02 | Phase 8 | Complete |
 | NAV-03 | Phase 8 | Complete |
-| KEY-01 | Phase 8 | Pending |
-| KEY-02 | Phase 8 | Pending |
-| KEY-03 | Phase 8 | Pending |
-| KEY-04 | Phase 8 | Pending |
-| KEY-05 | Phase 8 | Pending |
-| KEY-06 | Phase 8 | Pending |
-| KEY-07 | Phase 8 | Pending |
-| KEY-08 | Phase 8 | Pending |
+| KEY-01 | Phase 8 | Complete |
+| KEY-02 | Phase 8 | Complete |
+| KEY-03 | Phase 8 | Complete |
+| KEY-04 | Phase 8 | Complete |
+| KEY-05 | Phase 8 | Complete |
+| KEY-06 | Phase 8 | Complete |
+| KEY-07 | Phase 8 | Complete |
+| KEY-08 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 53 total
