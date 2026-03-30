@@ -19,6 +19,8 @@ Teams can share and collaborate on API request collections through git — witho
 - [x] Connect GitHub repos as workspaces (clone, sync, disconnect) — Validated in Phase 5: GitHub Auth
 - [x] Sync status indicator visible in the UI (synced/syncing/conflict) — Validated in Phase 6: Git Sync Engine
 - [x] File-level last-write-wins conflict resolution with user notification — Validated in Phase 6: Git Sync Engine
+- [x] Automatic background sync — debounced push after saves, periodic pull, focus-pull — Validated in Phase 7: Background Sync Loop
+- [x] Offline detection and reconnection with queued push — Validated in Phase 7: Background Sync Loop
 
 ### Active
 
@@ -98,4 +100,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-28 after Phase 6 (Git Sync Engine) complete — thread-safe git actor, manual sync via TopBar chip, pull-on-switch, remote-wins conflict resolution with toast notification, sync status indicators*
+*Last updated: 2026-03-30 after Phase 7 (Background Sync Loop) complete — automatic debounced push, 30s periodic pull, focus-pull, offline detection with queued reconnection push, offline chip state with transition toasts*
