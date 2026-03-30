@@ -1,3 +1,4 @@
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { CollectionItem, TreeChild } from '../../types/collections';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { RenameInput } from './RenameInput';
@@ -8,6 +9,7 @@ import { RequestNode } from './RequestNode';
 interface CollectionNodeProps {
   collection: CollectionItem;
   depth: number;
+  overId: string | null;
 }
 
 function countChildren(children: TreeChild[]): number {
@@ -21,7 +23,7 @@ function countChildren(children: TreeChild[]): number {
   return count;
 }
 
-export function CollectionNode({ collection, depth }: CollectionNodeProps) {
+export function CollectionNode({ collection, depth, overId }: CollectionNodeProps) {
   const {
     expandedNodes,
     renamingNodeId,
@@ -35,6 +37,11 @@ export function CollectionNode({ collection, depth }: CollectionNodeProps) {
   const isExpanded = expandedNodes.has(nodeId);
   const isRenaming = renamingNodeId === nodeId;
   const childCount = countChildren(collection.children);
+
+  // Build nodeId strings for direct children (for SortableContext)
+  const childNodeIds = collection.children.map((child) =>
+    `${collection.slug}/${child.slug}`,
+  );
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,10 +58,15 @@ export function CollectionNode({ collection, depth }: CollectionNodeProps) {
     setRenamingNode(null);
   };
 
+  // Show drop highlight when something is dragged over the collection header
+  const isDropTarget = overId === collection.slug;
+
   return (
     <div>
       <div
-        className="flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none hover:bg-default-100"
+        className={`flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none hover:bg-default-100 ${
+          isDropTarget ? 'border border-primary' : ''
+        }`}
         style={{ paddingLeft: `${depth * 16 + 8}px` }}
         onClick={() => toggleExpanded(nodeId)}
         onContextMenu={handleContextMenu}
@@ -97,27 +109,29 @@ export function CollectionNode({ collection, depth }: CollectionNodeProps) {
         />
       </div>
       {isExpanded && (
-        <div>
-          {collection.children.map((child) =>
-            child.type === 'folder' ? (
-              <FolderNode
-                key={child.slug}
-                folder={child}
-                depth={depth + 1}
-                collectionSlug={collection.slug}
-                parentPath={[]}
-              />
-            ) : (
-              <RequestNode
-                key={child.slug}
-                request={child}
-                depth={depth + 1}
-                collectionSlug={collection.slug}
-                parentPath={[]}
-              />
-            ),
-          )}
-        </div>
+        <SortableContext items={childNodeIds} strategy={verticalListSortingStrategy}>
+          <div>
+            {collection.children.map((child) =>
+              child.type === 'folder' ? (
+                <FolderNode
+                  key={child.slug}
+                  folder={child}
+                  depth={depth + 1}
+                  collectionSlug={collection.slug}
+                  parentPath={[]}
+                />
+              ) : (
+                <RequestNode
+                  key={child.slug}
+                  request={child}
+                  depth={depth + 1}
+                  collectionSlug={collection.slug}
+                  parentPath={[]}
+                />
+              ),
+            )}
+          </div>
+        </SortableContext>
       )}
     </div>
   );

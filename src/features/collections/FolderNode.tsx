@@ -1,8 +1,11 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { TreeChild } from '../../types/collections';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { RenameInput } from './RenameInput';
 import { TreeContextMenu } from './TreeContextMenu';
 import { RequestNode } from './RequestNode';
+import DropIndicator from './DropIndicator';
 
 interface FolderNodeProps {
   folder: TreeChild & { type: 'folder' };
@@ -42,6 +45,16 @@ export function FolderNode({ folder, depth, collectionSlug, parentPath }: Folder
   const childCount = countChildren(folder.children);
   const childParentPath = [...parentPath, folder.slug];
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isOver,
+  } = useSortable({ id: nodeId });
+
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -59,9 +72,20 @@ export function FolderNode({ folder, depth, collectionSlug, parentPath }: Folder
 
   return (
     <div>
+      {isOver && !isDragging && <DropIndicator />}
       <div
-        className="flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none hover:bg-default-100"
-        style={{ paddingLeft: `${depth * 16 + 8}px` }}
+        ref={setNodeRef}
+        style={{
+          paddingLeft: `${depth * 16 + 8}px`,
+          transform: CSS.Transform.toString(transform),
+          transition,
+          opacity: isDragging ? 0.4 : 1,
+        }}
+        {...attributes}
+        {...listeners}
+        className={`flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none hover:bg-default-100 ${
+          isOver && !isDragging ? 'border border-primary' : ''
+        }`}
         onClick={() => toggleExpanded(nodeId)}
         onContextMenu={handleContextMenu}
       >

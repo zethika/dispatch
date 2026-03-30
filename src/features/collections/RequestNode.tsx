@@ -1,8 +1,11 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import type { TreeChild } from '../../types/collections';
 import { useCollectionStore } from '../../stores/collectionStore';
 import { MethodBadge } from './MethodBadge';
 import { RenameInput } from './RenameInput';
 import { TreeContextMenu } from './TreeContextMenu';
+import DropIndicator from './DropIndicator';
 
 interface RequestNodeProps {
   request: TreeChild & { type: 'request' };
@@ -29,6 +32,16 @@ export function RequestNode({ request, depth, collectionSlug, parentPath }: Requ
   const isActive = activeRequestId === nodeId;
   const isRenaming = renamingNodeId === nodeId;
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isOver,
+  } = useSortable({ id: nodeId });
+
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -45,32 +58,43 @@ export function RequestNode({ request, depth, collectionSlug, parentPath }: Requ
   };
 
   return (
-    <div
-      className={`flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none ${
-        isActive ? 'bg-default-200' : 'hover:bg-default-100'
-      }`}
-      style={{ paddingLeft: `${depth * 16 + 8}px` }}
-      onClick={() => setActiveRequest(nodeId)}
-      onContextMenu={handleContextMenu}
-    >
-      <MethodBadge method={request.method} />
-      {isRenaming ? (
-        <RenameInput
-          currentName={request.name}
-          onConfirm={handleRenameConfirm}
-          onCancel={handleRenameCancel}
+    <>
+      {isOver && !isDragging && <DropIndicator />}
+      <div
+        ref={setNodeRef}
+        style={{
+          paddingLeft: `${depth * 16 + 8}px`,
+          transform: CSS.Transform.toString(transform),
+          transition,
+          opacity: isDragging ? 0.4 : 1,
+        }}
+        {...attributes}
+        {...listeners}
+        className={`flex items-center gap-1 px-2 py-1 cursor-pointer rounded-sm select-none ${
+          isActive ? 'bg-default-200' : 'hover:bg-default-100'
+        }`}
+        onClick={() => setActiveRequest(nodeId)}
+        onContextMenu={handleContextMenu}
+      >
+        <MethodBadge method={request.method} />
+        {isRenaming ? (
+          <RenameInput
+            currentName={request.name}
+            onConfirm={handleRenameConfirm}
+            onCancel={handleRenameCancel}
+          />
+        ) : (
+          <span className="text-sm truncate">{request.name}</span>
+        )}
+        <TreeContextMenu
+          nodeType="request"
+          collectionSlug={collectionSlug}
+          parentPath={parentPath}
+          slug={request.slug}
+          nodeName={request.name}
+          childCount={0}
         />
-      ) : (
-        <span className="text-sm truncate">{request.name}</span>
-      )}
-      <TreeContextMenu
-        nodeType="request"
-        collectionSlug={collectionSlug}
-        parentPath={parentPath}
-        slug={request.slug}
-        nodeName={request.name}
-        childCount={0}
-      />
-    </div>
+      </div>
+    </>
   );
 }
