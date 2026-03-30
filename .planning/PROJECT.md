@@ -21,6 +21,11 @@ Teams can share and collaborate on API request collections through git — witho
 - [x] File-level last-write-wins conflict resolution with user notification — Validated in Phase 6: Git Sync Engine
 - [x] Automatic background sync — debounced push after saves, periodic pull, focus-pull — Validated in Phase 7: Background Sync Loop
 - [x] Offline detection and reconnection with queued push — Validated in Phase 7: Background Sync Loop
+- [x] cURL import (paste detection + explicit import action) — Validated in Phase 8: Polish & Power Features
+- [x] cURL export (copy as cURL with resolved variables) — Validated in Phase 8: Polish & Power Features
+- [x] Fuzzy search across requests, URLs, and collection names (Cmd+K) — Validated in Phase 8: Polish & Power Features
+- [x] Drag and drop reordering and moving of requests/folders — Validated in Phase 8: Polish & Power Features
+- [x] Keyboard shortcuts for common actions — Validated in Phase 8: Polish & Power Features
 
 ### Active
 
@@ -35,11 +40,11 @@ Teams can share and collaborate on API request collections through git — witho
 - ~~Local-only secrets layer (never committed to git)~~ → Validated
 - ~~Conflict resolution (last-write-wins at file level with notification)~~ → Validated
 - [ ] Offline support (queue changes, push when connectivity returns)
-- [ ] cURL import (paste detection + explicit import action)
-- [ ] cURL export (copy as cURL with resolved variables)
-- [ ] Fuzzy search across requests, URLs, and collection names (Cmd+K)
-- [ ] Drag and drop reordering and moving of requests/folders
-- [ ] Keyboard shortcuts for common actions
+- ~~cURL import (paste detection + explicit import action)~~ → Validated
+- ~~cURL export (copy as cURL with resolved variables)~~ → Validated
+- ~~Fuzzy search across requests, URLs, and collection names (Cmd+K)~~ → Validated
+- ~~Drag and drop reordering and moving of requests/folders~~ → Validated
+- ~~Keyboard shortcuts for common actions~~ → Validated
 
 ### Out of Scope
 
@@ -100,4 +105,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-30 after Phase 7 (Background Sync Loop) complete — automatic debounced push, 30s periodic pull, focus-pull, offline detection with queued reconnection push, offline chip state with transition toasts*
+*Last updated: 2026-03-30 after Phase 8 (Polish & Power Features) complete — drag-and-drop reordering, cURL import/export, Cmd+K fuzzy search, 9 global keyboard shortcuts with flash feedback, shortcut cheatsheet. This is the last phase of v1.0.*
