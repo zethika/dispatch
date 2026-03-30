@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use tauri::Manager;
 
 use crate::collections::{io, types::*};
@@ -6,7 +8,7 @@ use crate::collections::{io, types::*};
 fn workspace_dir(
     app: &tauri::AppHandle,
     workspace_id: &str,
-) -> Result<std::path::PathBuf, String> {
+) -> Result<PathBuf, String> {
     let app_data = app.path().app_data_dir().map_err(|e| e.to_string())?;
     Ok(app_data.join("workspaces").join(workspace_id))
 }
@@ -18,7 +20,7 @@ fn resolve_parent_dir(
     workspace_id: &str,
     collection_slug: &str,
     parent_path: &[String],
-) -> Result<std::path::PathBuf, String> {
+) -> Result<PathBuf, String> {
     let ws_dir = workspace_dir(app, workspace_id)?;
     let mut dir = ws_dir.join("collections").join(collection_slug);
     for slug in parent_path {
@@ -214,4 +216,54 @@ pub async fn duplicate_request(
     });
 
     Ok(result)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn reorder_node(
+    workspace_id: String,
+    collection_slug: String,
+    parent_path: Vec<String>,
+    slug: String,
+    new_index: u32,
+    app: tauri::AppHandle,
+) -> Result<(), String> {
+    let parent_dir = resolve_parent_dir(&app, &workspace_id, &collection_slug, &parent_path)?;
+    io::reorder_node(&parent_dir, &slug, new_index as usize).map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn move_node(
+    workspace_id: String,
+    src_collection_slug: String,
+    src_parent_path: Vec<String>,
+    dst_collection_slug: String,
+    dst_parent_path: Vec<String>,
+    slug: String,
+    is_dir: bool,
+    dst_index: Option<u32>,
+    app: tauri::AppHandle,
+) -> Result<(), String> {
+    let ws_dir = workspace_dir(&app, &workspace_id)?;
+    let src_dir = resolve_parent_dir(&app, &workspace_id, &src_collection_slug, &src_parent_path)?;
+    let dst_dir = resolve_parent_dir(&app, &workspace_id, &dst_collection_slug, &dst_parent_path)?;
+    io::move_node(&src_dir, &dst_dir, &ws_dir, &slug, is_dir, dst_index.map(|i| i as usize))
+        .map_err(|e| e.to_string())?;
+
+    let app2 = app.clone();
+    let wid = workspace_id.clone();
+    tauri::async_runtime::spawn(async move {
+        crate::commands::sync::notify_change_inner(&app2, wid).await;
+    });
+
+    Ok(())
 }

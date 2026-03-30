@@ -27,6 +27,8 @@ pub fn run() {
             commands::collections::delete_collection,
             commands::collections::rename_collection,
             commands::collections::duplicate_request,
+            commands::collections::reorder_node,
+            commands::collections::move_node,
             commands::http::send_request,
             commands::http::load_request,
             commands::http::save_request,

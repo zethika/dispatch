@@ -37,6 +37,21 @@ interface CollectionStore {
     parentPath: string[],
     slug: string,
   ) => Promise<void>;
+  reorderNode: (
+    collectionSlug: string,
+    parentPath: string[],
+    slug: string,
+    newIndex: number,
+  ) => Promise<void>;
+  moveNode: (
+    srcCollectionSlug: string,
+    srcParentPath: string[],
+    dstCollectionSlug: string,
+    dstParentPath: string[],
+    slug: string,
+    isDir: boolean,
+    dstIndex: number | null,
+  ) => Promise<void>;
   toggleExpanded: (nodeId: string) => void;
   setActiveRequest: (id: string | null) => void;
   setRenamingNode: (id: string | null) => void;
@@ -180,6 +195,42 @@ export const useCollectionStore = create<CollectionStore>((set, get) => ({
     const { workspaceId } = get();
     if (!workspaceId) return;
     await collectionsApi.duplicateRequest(workspaceId, collectionSlug, parentPath, slug);
+    await get().refreshWorkspace();
+  },
+
+  reorderNode: async (
+    collectionSlug: string,
+    parentPath: string[],
+    slug: string,
+    newIndex: number,
+  ) => {
+    const { workspaceId } = get();
+    if (!workspaceId) return;
+    await collectionsApi.reorderNode(workspaceId, collectionSlug, parentPath, slug, newIndex);
+    await get().refreshWorkspace();
+  },
+
+  moveNode: async (
+    srcCollectionSlug: string,
+    srcParentPath: string[],
+    dstCollectionSlug: string,
+    dstParentPath: string[],
+    slug: string,
+    isDir: boolean,
+    dstIndex: number | null,
+  ) => {
+    const { workspaceId } = get();
+    if (!workspaceId) return;
+    await collectionsApi.moveNode(
+      workspaceId,
+      srcCollectionSlug,
+      srcParentPath,
+      dstCollectionSlug,
+      dstParentPath,
+      slug,
+      isDir,
+      dstIndex,
+    );
     await get().refreshWorkspace();
   },
 

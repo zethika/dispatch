@@ -591,6 +591,90 @@ pub fn duplicate_request(parent_dir: &Path, slug: &str) -> anyhow::Result<Reques
     })
 }
 
+/// Reorder a node within its current parent directory by moving it to `new_index`.
+pub fn reorder_node(parent_dir: &Path, slug: &str, new_index: usize) -> anyhow::Result<()> {
+    let manifest_path = dir_manifest_path(parent_dir);
+    let is_collection = manifest_path
+        .file_name()
+        .map(|n| n == "_collection.json")
+        .unwrap_or(false);
+
+    if is_collection {
+        let mut manifest: CollectionManifest = read_manifest(&manifest_path)?;
+        manifest.order.retain(|s| s != slug);
+        let idx = new_index.min(manifest.order.len());
+        manifest.order.insert(idx, slug.to_string());
+        write_manifest(&manifest_path, &manifest)
+    } else {
+        let mut manifest: FolderManifest = read_manifest(&manifest_path)?;
+        manifest.order.retain(|s| s != slug);
+        let idx = new_index.min(manifest.order.len());
+        manifest.order.insert(idx, slug.to_string());
+        write_manifest(&manifest_path, &manifest)
+    }
+}
+
+/// Move a node from one parent directory to another.
+/// `is_dir` indicates whether the slug is a directory (folder) or a file (request).
+/// `dst_index` is the position to insert at in the destination; `None` appends at the end.
+pub fn move_node(
+    src_parent_dir: &Path,
+    dst_parent_dir: &Path,
+    workspace_dir: &Path,
+    slug: &str,
+    is_dir: bool,
+    dst_index: Option<usize>,
+) -> anyhow::Result<()> {
+    assert_within(workspace_dir, src_parent_dir)?;
+    assert_within(workspace_dir, dst_parent_dir)?;
+
+    let src_path = if is_dir {
+        src_parent_dir.join(slug)
+    } else {
+        src_parent_dir.join(format!("{slug}.json"))
+    };
+    let dst_path = if is_dir {
+        dst_parent_dir.join(slug)
+    } else {
+        dst_parent_dir.join(format!("{slug}.json"))
+    };
+
+    fs::rename(&src_path, &dst_path)
+        .with_context(|| format!("Failed to move {} -> {}", src_path.display(), dst_path.display()))?;
+
+    // Remove from source parent manifest
+    remove_from_order(&dir_manifest_path(src_parent_dir), slug)?;
+
+    // Insert into destination parent manifest
+    let dst_manifest_path = dir_manifest_path(dst_parent_dir);
+    let is_dst_collection = dst_manifest_path
+        .file_name()
+        .map(|n| n == "_collection.json")
+        .unwrap_or(false);
+
+    if is_dst_collection {
+        let mut manifest: CollectionManifest = read_manifest(&dst_manifest_path)?;
+        match dst_index {
+            Some(i) => {
+                let idx = i.min(manifest.order.len());
+                manifest.order.insert(idx, slug.to_string());
+            }
+            None => manifest.order.push(slug.to_string()),
+        }
+        write_manifest(&dst_manifest_path, &manifest)
+    } else {
+        let mut manifest: FolderManifest = read_manifest(&dst_manifest_path)?;
+        match dst_index {
+            Some(i) => {
+                let idx = i.min(manifest.order.len());
+                manifest.order.insert(idx, slug.to_string());
+            }
+            None => manifest.order.push(slug.to_string()),
+        }
+        write_manifest(&dst_manifest_path, &manifest)
+    }
+}
+
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 #[cfg(test)]

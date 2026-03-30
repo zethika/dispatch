@@ -115,3 +115,41 @@ export async function duplicateRequest(
     slug,
   });
 }
+
+export async function reorderNode(
+  workspaceId: string,
+  collectionSlug: string,
+  parentPath: string[],
+  slug: string,
+  newIndex: number,
+): Promise<void> {
+  return invoke('reorder_node', {
+    workspaceId,
+    collectionSlug,
+    parentPath,
+    slug,
+    newIndex,
+  });
+}
+
+export async function moveNode(
+  workspaceId: string,
+  srcCollectionSlug: string,
+  srcParentPath: string[],
+  dstCollectionSlug: string,
+  dstParentPath: string[],
+  slug: string,
+  isDir: boolean,
+  dstIndex: number | null,
+): Promise<void> {
+  return invoke('move_node', {
+    workspaceId,
+    srcCollectionSlug,
+    srcParentPath,
+    dstCollectionSlug,
+    dstParentPath,
+    slug,
+    isDir,
+    dstIndex,
+  });
+}
