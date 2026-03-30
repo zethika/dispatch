@@ -128,7 +128,7 @@ export default function SearchModal() {
   // Compute grouped results
   const groupedResults = useMemo((): Map<string, { collectionName: string; items: SearchItem[] }> => {
     if (!query.trim()) return new Map();
-    const results = fuse.search(query).map((r) => r.item);
+    const results = fuse.search(query).map((r: { item: SearchItem }) => r.item);
     return groupByCollection(results);
   }, [query, fuse]);
 

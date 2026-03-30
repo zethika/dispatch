@@ -140,7 +140,7 @@ export default function TopBar() {
 
       <Dropdown>
         <DropdownTrigger>
-          <Button size="sm" variant="flat">
+          <Button size="sm" variant="flat" data-shortcut-id="env-selector">
             {activeEnvName}
           </Button>
         </DropdownTrigger>
@@ -202,7 +202,9 @@ export default function TopBar() {
 
       <div className="flex-1" />
 
-      <SyncStatusChip />
+      <span data-shortcut-id="sync-chip">
+        <SyncStatusChip />
+      </span>
 
       {workspaceId && (
         <EnvironmentModal

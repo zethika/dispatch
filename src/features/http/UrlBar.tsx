@@ -69,7 +69,7 @@ export default function UrlBar() {
   const urlTokens = tokenize(url, activeEnvVariables);
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 items-center" data-shortcut-id="url-bar">
       <Dropdown>
         <DropdownTrigger>
           <Button
@@ -152,6 +152,7 @@ export default function UrlBar() {
         isLoading={isLoading}
         isDisabled={!url.trim() || isLoading}
         onPress={handleSend}
+        data-shortcut-id="send-button"
       >
         Send
       </Button>

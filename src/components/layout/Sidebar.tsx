@@ -15,6 +15,7 @@ export default function Sidebar() {
   return (
     <div
       data-testid="sidebar"
+      data-shortcut-id="sidebar-area"
       className="w-[260px] min-w-[260px] flex flex-col border-r border-divider bg-content1 overflow-y-auto"
     >
       <WorkspaceSwitcher onConnectRepo={() => setRepoBrowserOpen(true)} />
