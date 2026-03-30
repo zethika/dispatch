@@ -1,7 +1,7 @@
 use tauri::{Emitter, Manager};
 
 use crate::auth::token;
-use crate::sync::{ActorHandle, SyncResult, SyncStatusPayload};
+use crate::sync::{actor::is_network_error, ActorHandle, SyncResult, SyncStatusPayload};
 use crate::workspace::registry;
 
 /// Commit all local changes, push to remote, then pull to apply remote updates.
@@ -83,11 +83,12 @@ pub async fn sync_workspace(
 
     if let Err(ref push_err) = push_result {
         let err_msg: String = push_err.clone();
+        let status = if is_network_error(&err_msg) { "offline" } else { "error" };
         app.emit(
             "sync-status-changed",
             SyncStatusPayload {
                 workspace_id: workspace_id.clone(),
-                status: "error".to_string(),
+                status: status.to_string(),
                 message: Some(err_msg.clone()),
                 conflicted_files: vec![],
             },
@@ -132,11 +133,12 @@ pub async fn sync_workspace(
             .map_err(|e| e.to_string())?;
         }
         Err(e) => {
+            let status = if is_network_error(&e) { "offline" } else { "error" };
             app.emit(
                 "sync-status-changed",
                 SyncStatusPayload {
                     workspace_id: workspace_id.clone(),
-                    status: "error".to_string(),
+                    status: status.to_string(),
                     message: Some(e.clone()),
                     conflicted_files: vec![],
                 },
@@ -219,11 +221,12 @@ pub async fn pull_workspace(
             .map_err(|e| e.to_string())?;
         }
         Err(e) => {
+            let status = if is_network_error(&e) { "offline" } else { "error" };
             app.emit(
                 "sync-status-changed",
                 SyncStatusPayload {
                     workspace_id: workspace_id.clone(),
-                    status: "error".to_string(),
+                    status: status.to_string(),
                     message: Some(e.clone()),
                     conflicted_files: vec![],
                 },

@@ -68,6 +68,31 @@ const XCircleIcon = () => (
   </svg>
 );
 
+const CloudOffIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="text-default-400"
+  >
+    <path
+      d="M2 2L22 22"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M9.34 9.34C7.14 9.75 5.5 11.68 5.5 14C5.5 16.49 7.51 18.5 10 18.5H16.73M20 15.74A4.5 4.5 0 0 0 17 9.5H15.92A7 7 0 0 0 7.73 5.73"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 const NoSyncIcon = () => (
   <svg
     width="16"
@@ -128,6 +153,8 @@ export default function SyncStatusChip() {
       <CheckCircleIcon />
     ) : status === 'conflict' ? (
       <WarningTriangleIcon />
+    ) : status === 'offline' ? (
+      <CloudOffIcon />
     ) : (
       <XCircleIcon />
     );
@@ -139,7 +166,9 @@ export default function SyncStatusChip() {
         ? 'Synced'
         : status === 'conflict'
           ? 'Conflict'
-          : 'Error';
+          : status === 'offline'
+            ? 'Offline'
+            : 'Error';
 
   return (
     <Button

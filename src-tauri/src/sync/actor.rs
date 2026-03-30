@@ -306,6 +306,8 @@ pub(crate) fn is_network_error(err: &str) -> bool {
         || lower.contains("network")
         || lower.contains("timed out")
         || lower.contains("connection refused")
+        || lower.contains("resolve address")
+        || lower.contains("nodename nor servname")
         || lower.contains("ssl");
     let is_auth = lower.contains("authentication failed") || lower.contains("not_authenticated");
     is_network && !is_auth

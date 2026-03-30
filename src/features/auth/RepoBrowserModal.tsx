@@ -126,7 +126,8 @@ export default function RepoBrowserModal({ isOpen, onClose }: RepoBrowserModalPr
       setCloningRepoId(null);
       // Immediately update sidebar workspace list (D-05)
       useWorkspaceStore.getState().addWorkspace(entry);
-    } catch {
+    } catch (err) {
+      console.error('connect_workspace failed:', err);
       setErrorRepoId(repo.id);
       setCloningRepoId(null);
     }

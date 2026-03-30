@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { syncWorkspace, pullWorkspace } from '../api/sync';
 import { useRequestStore } from './requestStore';
 
-export type SyncStatus = 'synced' | 'syncing' | 'conflict' | 'error' | 'local';
+export type SyncStatus = 'synced' | 'syncing' | 'conflict' | 'error' | 'offline' | 'local';
 
 interface SyncStatusPayload {
   workspaceId: string;
@@ -87,9 +87,16 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       }
     } catch (e) {
       console.error('[syncStore] triggerSync error:', e);
-      if (get().syncStatuses[workspaceId] === 'syncing') {
+      // Don't overwrite 'offline' — the event listener may have already set it.
+      // Also detect network errors from the IPC rejection string itself.
+      const current = get().syncStatuses[workspaceId];
+      if (current !== 'offline') {
+        const errStr = String(e).toLowerCase();
+        const isNetworkErr = errStr.includes('resolve address') || errStr.includes('nodename')
+          || errStr.includes('network') || errStr.includes('timed out')
+          || errStr.includes('could not connect') || errStr.includes('connection refused');
         set((s) => ({
-          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'error' },
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: isNetworkErr ? 'offline' : 'error' },
         }));
       }
     }
@@ -110,9 +117,14 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       }
     } catch (e) {
       console.error('[syncStore] triggerPull error:', e);
-      if (get().syncStatuses[workspaceId] === 'syncing') {
+      const current = get().syncStatuses[workspaceId];
+      if (current !== 'offline') {
+        const errStr = String(e).toLowerCase();
+        const isNetworkErr = errStr.includes('resolve address') || errStr.includes('nodename')
+          || errStr.includes('network') || errStr.includes('timed out')
+          || errStr.includes('could not connect') || errStr.includes('connection refused');
         set((s) => ({
-          syncStatuses: { ...s.syncStatuses, [workspaceId]: 'synced' },
+          syncStatuses: { ...s.syncStatuses, [workspaceId]: isNetworkErr ? 'offline' : 'synced' },
         }));
       }
     }
