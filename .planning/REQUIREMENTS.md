@@ -31,8 +31,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **COLL-02**: User can create, rename, and delete collections
 - [x] **COLL-03**: User can create, rename, and delete subfolders within collections (arbitrary nesting)
 - [x] **COLL-04**: User can create, rename, delete, and duplicate requests
-- [ ] **COLL-05**: User can drag and drop to reorder requests and folders within a collection
-- [ ] **COLL-06**: User can drag and drop to move requests and folders between collections
+- [x] **COLL-05**: User can drag and drop to reorder requests and folders within a collection
+- [x] **COLL-06**: User can drag and drop to move requests and folders between collections
 
 ### Environments
 
@@ -62,10 +62,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Import/Export
 
-- [ ] **CURL-01**: User can import a cURL command by pasting (Cmd+V auto-detect) in request panel
-- [ ] **CURL-02**: User can import a cURL command via explicit action in collection context menu
-- [ ] **CURL-03**: User can copy any request as cURL (context menu + Cmd+Shift+C)
-- [ ] **CURL-04**: Exported cURL resolves variables from the active environment
+- [x] **CURL-01**: User can import a cURL command by pasting (Cmd+V auto-detect) in request panel
+- [x] **CURL-02**: User can import a cURL command via explicit action in collection context menu
+- [x] **CURL-03**: User can copy any request as cURL (context menu + Cmd+Shift+C)
+- [x] **CURL-04**: Exported cURL resolves variables from the active environment
 
 ### Search & Navigation
 
@@ -174,12 +174,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SYNC-02 | Phase 7 | Complete |
 | SYNC-03 | Phase 7 | Complete |
 | SYNC-06 | Phase 7 | Complete |
-| COLL-05 | Phase 8 | Pending |
-| COLL-06 | Phase 8 | Pending |
-| CURL-01 | Phase 8 | Pending |
-| CURL-02 | Phase 8 | Pending |
-| CURL-03 | Phase 8 | Pending |
-| CURL-04 | Phase 8 | Pending |
+| COLL-05 | Phase 8 | Complete |
+| COLL-06 | Phase 8 | Complete |
+| CURL-01 | Phase 8 | Complete |
+| CURL-02 | Phase 8 | Complete |
+| CURL-03 | Phase 8 | Complete |
+| CURL-04 | Phase 8 | Complete |
 | NAV-01 | Phase 8 | Pending |
 | NAV-02 | Phase 8 | Pending |
 | NAV-03 | Phase 8 | Pending |
