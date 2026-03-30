@@ -142,10 +142,12 @@ Plans:
   3. User can copy any request as a cURL command (Cmd+Shift+C or context menu) with variables resolved from the active environment
   4. User can open Cmd+K search, type a fuzzy query, and navigate directly to a matching request
   5. All keyboard shortcuts (Cmd+Enter, Cmd+N, Cmd+Shift+N, Cmd+K, Cmd+E, Cmd+Shift+C, Cmd+W, Cmd+S) work from anywhere in the app
-**Plans**: 2 plans
+**Plans**: 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Tauri project, install deps, configure HeroUI/Tailwind, Rust ping command, vitest
-- [ ] 01-02-PLAN.md — Three-panel app shell layout with TopBar, Sidebar, RightPanel, visual verification
+- [ ] 08-01-PLAN.md — Drag-and-drop reordering and cross-collection moves (Rust commands + dnd-kit UI)
+- [ ] 08-02-PLAN.md — cURL import/export (parseCurl, buildCurlString, paste detection, context menu)
+- [ ] 08-03-PLAN.md — Cmd+K fuzzy search (Fuse.js, grouped results, keyboard navigation)
+- [ ] 08-04-PLAN.md — Global keyboard shortcuts and cheatsheet modal
 **UI hint**: yes
 
 ## Progress
@@ -162,4 +164,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | 5. GitHub Auth | 3/3 | Complete   | 2026-03-25 |
 | 6. Git Sync Engine | 2/2 | Complete   | 2026-03-26 |
 | 7. Background Sync Loop | 2/2 | Complete   | 2026-03-29 |
-| 8. Polish & Power Features | 0/? | Not started | - |
+| 8. Polish & Power Features | 0/4 | Not started | - |
