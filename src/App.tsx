@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Toaster } from 'sonner';
+import { getCurrentWindow } from '@tauri-apps/api/window';
 import TopBar from './components/layout/TopBar';
 import Sidebar from './components/layout/Sidebar';
 import RightPanel from './components/layout/RightPanel';
@@ -7,6 +8,7 @@ import { ensureDefaultWorkspace } from './api/collections';
 import { useCollectionStore } from './stores/collectionStore';
 import { useAuthStore } from './stores/authStore';
 import { useWorkspaceStore } from './stores/workspaceStore';
+import { useSyncStore } from './stores/syncStore';
 
 export default function App() {
   const { workspaceId, loadWorkspace } = useCollectionStore();
@@ -26,6 +28,25 @@ export default function App() {
       })
       .catch(console.error);
   }, [workspaceId, loadWorkspace]);
+
+  // SYNC-03: Pull from remote when macOS window regains focus (D-08)
+  useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    getCurrentWindow()
+      .onFocusChanged(({ payload: focused }) => {
+        if (focused) {
+          const { activeWorkspaceId, workspaces } = useWorkspaceStore.getState();
+          const workspace = workspaces.find((w) => w.id === activeWorkspaceId);
+          if (workspace && !workspace.is_local && workspace.clone_url) {
+            void useSyncStore.getState().triggerPull(workspace.id);
+          }
+        }
+      })
+      .then((fn) => {
+        unlisten = fn;
+      });
+    return () => unlisten?.();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">

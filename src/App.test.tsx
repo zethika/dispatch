@@ -6,6 +6,12 @@ vi.mock('@tauri-apps/api/core', () => ({
   invoke: vi.fn().mockResolvedValue('pong'),
 }));
 
+vi.mock('@tauri-apps/api/window', () => ({
+  getCurrentWindow: vi.fn(() => ({
+    onFocusChanged: vi.fn().mockResolvedValue(() => {}),
+  })),
+}));
+
 vi.mock('./stores/collectionStore', () => ({
   useCollectionStore: vi.fn((selector?: (s: unknown) => unknown) => {
     const state = {
@@ -67,6 +73,30 @@ vi.mock('./stores/workspaceStore', () => ({
       getState: vi.fn(() => ({
         loadWorkspaces: vi.fn(),
         addWorkspace: vi.fn(),
+        workspaces: [],
+        activeWorkspaceId: null,
+      })),
+    },
+  ),
+}));
+
+vi.mock('./stores/syncStore', () => ({
+  useSyncStore: Object.assign(
+    vi.fn((selector?: (s: unknown) => unknown) => {
+      const state = {
+        syncStatuses: {},
+        initListener: vi.fn().mockResolvedValue(() => {}),
+        triggerSync: vi.fn(),
+        triggerPull: vi.fn(),
+        getStatus: vi.fn(() => 'synced'),
+      };
+      return selector ? selector(state) : state;
+    }),
+    {
+      getState: vi.fn(() => ({
+        triggerPull: vi.fn(),
+        initListener: vi.fn().mockResolvedValue(() => {}),
+        syncStatuses: {},
       })),
     },
   ),
