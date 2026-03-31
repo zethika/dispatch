@@ -22,3 +22,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </HeroUIProvider>
   </React.StrictMode>
 );
+
+// Remove the HTML splash screen now that React has mounted
+document.getElementById('splash')?.remove();
