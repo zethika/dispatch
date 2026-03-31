@@ -24,8 +24,8 @@ fn write_manifest<T: serde::Serialize>(path: &Path, data: &T) -> anyhow::Result<
     fs::write(path, content).with_context(|| format!("Failed to write manifest: {}", path.display()))
 }
 
-fn environments_dir(ws_dir: &Path) -> PathBuf {
-    ws_dir.join("environments")
+fn environments_dir(app_data: &Path, workspace_id: &str) -> PathBuf {
+    app_data.join("environments").join(workspace_id)
 }
 
 fn secrets_dir(app_data: &Path, workspace_id: &str) -> PathBuf {
@@ -35,8 +35,8 @@ fn secrets_dir(app_data: &Path, workspace_id: &str) -> PathBuf {
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /// List all environments in a workspace, returning summaries with slug and name.
-pub fn list_environments(ws_dir: &Path) -> anyhow::Result<Vec<EnvironmentSummary>> {
-    let env_dir = environments_dir(ws_dir);
+pub fn list_environments(app_data: &Path, workspace_id: &str) -> anyhow::Result<Vec<EnvironmentSummary>> {
+    let env_dir = environments_dir(app_data, workspace_id);
     if !env_dir.exists() {
         return Ok(vec![]);
     }
@@ -75,19 +75,20 @@ pub fn list_environments(ws_dir: &Path) -> anyhow::Result<Vec<EnvironmentSummary
 }
 
 /// Load a full environment file by slug.
-pub fn load_environment(ws_dir: &Path, env_slug: &str) -> anyhow::Result<EnvironmentFile> {
-    let path = environments_dir(ws_dir).join(format!("{}.json", env_slug));
+pub fn load_environment(app_data: &Path, workspace_id: &str, env_slug: &str) -> anyhow::Result<EnvironmentFile> {
+    let path = environments_dir(app_data, workspace_id).join(format!("{}.json", env_slug));
     read_manifest(&path)
 }
 
-/// Save an environment file, stripping secret values before writing (ENV-05 / D-10).
+/// Save an environment file, stripping secret values before writing.
 /// Variables where `secret == true` have their `value` set to empty string on disk.
 pub fn save_environment(
-    ws_dir: &Path,
+    app_data: &Path,
+    workspace_id: &str,
     env_slug: &str,
     env: &EnvironmentFile,
 ) -> anyhow::Result<()> {
-    let env_dir = environments_dir(ws_dir);
+    let env_dir = environments_dir(app_data, workspace_id);
     let path = env_dir.join(format!("{}.json", env_slug));
 
     // Sanitize: strip secret values before writing to disk
@@ -113,8 +114,8 @@ pub fn save_environment(
 
 /// Create a new environment file with the given name.
 /// Returns an `EnvironmentSummary` with the generated slug and name.
-pub fn create_environment(ws_dir: &Path, name: &str) -> anyhow::Result<EnvironmentSummary> {
-    let env_dir = environments_dir(ws_dir);
+pub fn create_environment(app_data: &Path, workspace_id: &str, name: &str) -> anyhow::Result<EnvironmentSummary> {
+    let env_dir = environments_dir(app_data, workspace_id);
     fs::create_dir_all(&env_dir)?;
 
     let base_slug = slugify::to_slug(name);
@@ -132,14 +133,13 @@ pub fn create_environment(ws_dir: &Path, name: &str) -> anyhow::Result<Environme
     })
 }
 
-/// Delete an environment file and its associated secrets file (D-04 atomic delete).
+/// Delete an environment file and its associated secrets file.
 pub fn delete_environment(
-    ws_dir: &Path,
     app_data: &Path,
     workspace_id: &str,
     env_slug: &str,
 ) -> anyhow::Result<()> {
-    let env_path = environments_dir(ws_dir).join(format!("{}.json", env_slug));
+    let env_path = environments_dir(app_data, workspace_id).join(format!("{}.json", env_slug));
     if env_path.exists() {
         fs::remove_file(&env_path)
             .with_context(|| format!("Failed to delete environment: {}", env_path.display()))?;
@@ -151,13 +151,12 @@ pub fn delete_environment(
 /// Rename an environment: reads old file, updates name, writes to new slug path, deletes old file.
 /// Also renames secrets file if it exists.
 pub fn rename_environment(
-    ws_dir: &Path,
     app_data: &Path,
     workspace_id: &str,
     old_slug: &str,
     new_name: &str,
 ) -> anyhow::Result<EnvironmentSummary> {
-    let env_dir = environments_dir(ws_dir);
+    let env_dir = environments_dir(app_data, workspace_id);
     let old_path = env_dir.join(format!("{}.json", old_slug));
 
     let mut env: EnvironmentFile = read_manifest(&old_path)?;
@@ -238,13 +237,14 @@ mod tests {
     #[test]
     fn test_create_environment_creates_file_with_correct_json() {
         let dir = tempdir().unwrap();
-        let ws_dir = dir.path();
+        let app_data = dir.path();
+        let ws_id = "ws-test";
 
-        let summary = create_environment(ws_dir, "Production").unwrap();
+        let summary = create_environment(app_data, ws_id, "Production").unwrap();
         assert_eq!(summary.slug, "production");
         assert_eq!(summary.name, "Production");
 
-        let env_path = ws_dir.join("environments").join("production.json");
+        let env_path = app_data.join("environments").join(ws_id).join("production.json");
         assert!(env_path.exists());
 
         let env: EnvironmentFile = read_manifest(&env_path).unwrap();
@@ -255,10 +255,11 @@ mod tests {
     #[test]
     fn test_save_environment_strips_secret_values() {
         let dir = tempdir().unwrap();
-        let ws_dir = dir.path();
+        let app_data = dir.path();
+        let ws_id = "ws-test";
 
         // Create first so the directory and file exist
-        create_environment(ws_dir, "Dev").unwrap();
+        create_environment(app_data, ws_id, "Dev").unwrap();
 
         let env = EnvironmentFile {
             name: "Dev".to_string(),
@@ -276,9 +277,9 @@ mod tests {
             ],
         };
 
-        save_environment(ws_dir, "dev", &env).unwrap();
+        save_environment(app_data, ws_id, "dev", &env).unwrap();
 
-        let saved: EnvironmentFile = read_manifest(&ws_dir.join("environments").join("dev.json")).unwrap();
+        let saved: EnvironmentFile = read_manifest(&app_data.join("environments").join(ws_id).join("dev.json")).unwrap();
         assert_eq!(saved.variables.len(), 2);
 
         // Non-secret value preserved
@@ -295,13 +296,14 @@ mod tests {
     #[test]
     fn test_list_environments_returns_all_with_correct_slugs() {
         let dir = tempdir().unwrap();
-        let ws_dir = dir.path();
+        let app_data = dir.path();
+        let ws_id = "ws-test";
 
-        create_environment(ws_dir, "Development").unwrap();
-        create_environment(ws_dir, "Staging").unwrap();
-        create_environment(ws_dir, "Production").unwrap();
+        create_environment(app_data, ws_id, "Development").unwrap();
+        create_environment(app_data, ws_id, "Staging").unwrap();
+        create_environment(app_data, ws_id, "Production").unwrap();
 
-        let summaries = list_environments(ws_dir).unwrap();
+        let summaries = list_environments(app_data, ws_id).unwrap();
         assert_eq!(summaries.len(), 3);
 
         let slugs: Vec<&str> = summaries.iter().map(|s| s.slug.as_str()).collect();
@@ -313,9 +315,9 @@ mod tests {
     #[test]
     fn test_list_environments_returns_empty_when_dir_not_exists() {
         let dir = tempdir().unwrap();
-        let ws_dir = dir.path();
+        let app_data = dir.path();
 
-        let summaries = list_environments(ws_dir).unwrap();
+        let summaries = list_environments(app_data, "ws-test").unwrap();
         assert!(summaries.is_empty());
     }
 
@@ -347,24 +349,23 @@ mod tests {
     #[test]
     fn test_delete_environment_removes_env_and_secrets() {
         let dir = tempdir().unwrap();
-        let ws_dir = dir.path();
-        let app_data = dir.path().join("appdata");
+        let app_data = dir.path();
         let workspace_id = "workspace-test";
 
-        create_environment(ws_dir, "Temp").unwrap();
+        create_environment(app_data, workspace_id, "Temp").unwrap();
 
         let mut secrets = HashMap::new();
         secrets.insert("KEY".to_string(), "value".to_string());
-        write_secrets(&app_data, workspace_id, "temp", &secrets).unwrap();
+        write_secrets(app_data, workspace_id, "temp", &secrets).unwrap();
 
         // Verify both exist
-        assert!(ws_dir.join("environments").join("temp.json").exists());
+        assert!(app_data.join("environments").join(workspace_id).join("temp.json").exists());
         assert!(app_data.join("secrets").join(workspace_id).join("temp.json").exists());
 
-        delete_environment(ws_dir, &app_data, workspace_id, "temp").unwrap();
+        delete_environment(app_data, workspace_id, "temp").unwrap();
 
         // Both should be gone
-        assert!(!ws_dir.join("environments").join("temp.json").exists());
+        assert!(!app_data.join("environments").join(workspace_id).join("temp.json").exists());
         assert!(!app_data.join("secrets").join(workspace_id).join("temp.json").exists());
     }
 }

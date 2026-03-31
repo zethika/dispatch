@@ -147,6 +147,10 @@ export default function VariableEditor({ variables, secretValues, onSave }: Vari
             onChange={(e) => updateRow(index, { key: e.target.value })}
             className="flex-1"
             aria-label="Variable key"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
           />
 
           {/* Value input */}
@@ -160,6 +164,10 @@ export default function VariableEditor({ variables, secretValues, onSave }: Vari
               onChange={(e) => updateRow(index, { secretValue: e.target.value })}
               className="flex-1"
               aria-label="Secret value"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
               endContent={
                 <Button
                   isIconOnly
@@ -209,6 +217,10 @@ export default function VariableEditor({ variables, secretValues, onSave }: Vari
               onChange={(e) => updateRow(index, { value: e.target.value })}
               className="flex-1"
               aria-label="Variable value"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
           )}
 

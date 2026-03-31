@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { load } from '@tauri-apps/plugin-store';
 import * as workspaceApi from '../api/workspace';
 import type { WorkspaceEntry } from '../api/workspace';
 import { useCollectionStore } from './collectionStore';
@@ -25,10 +26,22 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       const workspaces = await workspaceApi.listWorkspaces();
       if (!Array.isArray(workspaces)) return;
       const current = get().activeWorkspaceId;
+
+      // Restore persisted workspace selection
+      let restored: string | null = null;
+      if (!current) {
+        const store = await load('dispatch-prefs.json');
+        restored = (await store.get<string>('activeWorkspaceId')) ?? null;
+        // Only use if workspace still exists
+        if (restored && !workspaces.some((w) => w.id === restored)) {
+          restored = null;
+        }
+      }
+
       set({
         workspaces,
         activeWorkspaceId:
-          current || (workspaces.find((w) => w.is_local)?.id ?? workspaces[0]?.id ?? null),
+          current || restored || (workspaces.find((w) => w.is_local)?.id ?? workspaces[0]?.id ?? null),
       });
     } catch {
       // Silently fail — workspace list remains empty on error
@@ -37,6 +50,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   switchWorkspace: async (workspaceId: string) => {
     set({ activeWorkspaceId: workspaceId });
+    // Persist choice across restarts
+    load('dispatch-prefs.json').then((store) => store.set('activeWorkspaceId', workspaceId)).catch(console.error);
     // D-12: Pull latest remote changes on workspace switch (GitHub workspaces only)
     const workspace = get().workspaces.find((w) => w.id === workspaceId);
     if (workspace && !workspace.is_local && workspace.clone_url) {

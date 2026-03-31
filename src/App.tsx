@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, Toaster } from 'sonner';
+import { Spinner } from '@heroui/react';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import TopBar from './components/layout/TopBar';
 import Sidebar from './components/layout/Sidebar';
@@ -27,20 +28,30 @@ function flashElement(shortcutId: string) {
 export default function App() {
   const { workspaceId, loadWorkspace } = useCollectionStore();
   const checkAuth = useAuthStore((s) => s.checkAuth);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     void checkAuth();
   }, [checkAuth]);
 
   useEffect(() => {
-    if (workspaceId) return;
+    if (workspaceId) {
+      setReady(true);
+      return;
+    }
     ensureDefaultWorkspace()
-      .then((id) => {
-        // Load the workspace registry so WorkspaceSwitcher populates
-        void useWorkspaceStore.getState().loadWorkspaces();
-        return loadWorkspace(id);
+      .then(async (defaultId) => {
+        // Load the workspace registry (restores persisted workspace choice)
+        await useWorkspaceStore.getState().loadWorkspaces();
+        // Use persisted workspace if available, otherwise fall back to default
+        const restoredId = useWorkspaceStore.getState().activeWorkspaceId;
+        await loadWorkspace(restoredId ?? defaultId);
+        setReady(true);
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error(err);
+        setReady(true); // show app even on error
+      });
   }, [workspaceId, loadWorkspace]);
 
   // SYNC-03: Pull from remote when macOS window regains focus (D-08)
@@ -154,6 +165,14 @@ export default function App() {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, []);
+
+  if (!ready) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen bg-background">
+        <Spinner size="lg" color="primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-background text-foreground">
