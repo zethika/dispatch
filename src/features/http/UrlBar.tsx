@@ -44,13 +44,14 @@ export default function UrlBar() {
     const text = e.clipboardData.getData('text');
     if (text.trimStart().startsWith('curl ')) {
       e.preventDefault();
-      const parsed = parseCurl(text);
-      if (parsed) {
-        applyParsedCurl(parsed);
-        toast.success('cURL imported');
-      } else {
-        toast.warning('Could not parse cURL command');
-      }
+      void parseCurl(text).then((parsed) => {
+        if (parsed) {
+          applyParsedCurl(parsed);
+          toast.success('cURL imported');
+        } else {
+          toast.warning('Could not parse cURL command');
+        }
+      });
     }
     // If not a curl command, default paste behavior applies (text goes in URL field)
   };

@@ -2,31 +2,31 @@ import { describe, it, expect } from 'vitest';
 import { parseCurl, buildCurlString } from './curl';
 
 describe('parseCurl', () => {
-  it('parses simple GET', () => {
-    const result = parseCurl('curl https://api.example.com');
+  it('parses simple GET', async () => {
+    const result = await parseCurl('curl https://api.example.com');
     expect(result).toEqual({ method: 'GET', url: 'https://api.example.com', headers: {}, body: null });
   });
 
-  it('parses POST with headers and body', () => {
-    const result = parseCurl('curl -X POST https://api.example.com -H "Content-Type: application/json" -d \'{"key":"value"}\'');
+  it('parses POST with headers and body', async () => {
+    const result = await parseCurl('curl -X POST https://api.example.com -H "Content-Type: application/json" -d \'{"key":"value"}\'');
     expect(result).not.toBeNull();
     expect(result!.method).toBe('POST');
     expect(result!.headers['Content-Type']).toBe('application/json');
     expect(result!.body).toBe('{"key":"value"}');
   });
 
-  it('parses Authorization header', () => {
-    const result = parseCurl('curl -H "Authorization: Bearer tok123" https://api.example.com');
+  it('parses Authorization header', async () => {
+    const result = await parseCurl('curl -H "Authorization: Bearer tok123" https://api.example.com');
     expect(result).not.toBeNull();
     expect(result!.headers['Authorization']).toBe('Bearer tok123');
   });
 
-  it('returns null for non-curl input', () => {
-    expect(parseCurl('not a curl command')).toBeNull();
+  it('returns null for non-curl input', async () => {
+    expect(await parseCurl('not a curl command')).toBeNull();
   });
 
-  it('returns null for empty string', () => {
-    expect(parseCurl('')).toBeNull();
+  it('returns null for empty string', async () => {
+    expect(await parseCurl('')).toBeNull();
   });
 });
 

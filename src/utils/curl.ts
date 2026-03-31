@@ -1,4 +1,3 @@
-import { toJsonString } from 'curlconverter';
 import { substitute } from './variables';
 import type { KeyValueEntry, RequestBody, RequestAuth } from '../types/collections';
 
@@ -9,11 +8,12 @@ export interface ParsedCurl {
   body: string | null;
 }
 
-export function parseCurl(curlCommand: string): ParsedCurl | null {
+export async function parseCurl(curlCommand: string): Promise<ParsedCurl | null> {
   if (!curlCommand || !curlCommand.trimStart().startsWith('curl ')) {
     return null;
   }
   try {
+    const { toJsonString } = await import('curlconverter');
     const json = JSON.parse(toJsonString(curlCommand));
     return {
       method: (json.method ?? 'GET').toUpperCase(),

@@ -55,8 +55,8 @@ export { applyParsedCurl };
 export default function CurlImportModal({ isOpen, onClose }: CurlImportModalProps) {
   const [value, setValue] = useState('');
 
-  const handleImport = () => {
-    const parsed = parseCurl(value.trim());
+  const handleImport = async () => {
+    const parsed = await parseCurl(value.trim());
     if (parsed) {
       applyParsedCurl(parsed);
       toast.success('cURL imported');
